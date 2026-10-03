@@ -1,41 +1,41 @@
-# Poop Diary：Expo 基础方案
+# Poop Diary: Expo foundation plan
 
-日期：2026-10-04。基础工程位于 `apps/mobile`，已实现主题、三语、SQLite、六类记录 CRUD、Diary、Insights、Report 和组件预览。Azure 与真机验证仍待团队后续接入和确认。本文保留后续架构约束与课程要求；实际命令见 [mobile README](../apps/mobile/README.md)。
+Date: 2026-10-04. The foundation lives in `apps/mobile` and already includes themes, three languages, SQLite, CRUD for all six record types, Diary, Insights, Report, and the component gallery. Azure and device verification remain for the team to connect and confirm. This document records the architecture constraints and course requirements; commands are in the [mobile README](../apps/mobile/README.md).
 
-团队和 Agent 的日常规则统一见 [PROJECT_GUIDE.md](../PROJECT_GUIDE.md)。
+Daily rules for the team and agents live in [PROJECT_GUIDE.md](../PROJECT_GUIDE.md).
 
-## 目标
+## Goals
 
-三位成员可以分别用 Codex、Claude Code 开发功能，同时保持一致的视觉、交互和数据规则。修改主题中的一个语义值，应影响所有使用该值的组件；新增和编辑复用同一表单；切换语言不改变记录的含义或统计结果。
+Three members should be able to use Codex or Claude Code on separate features while keeping visual, interaction, and data rules consistent. Changing one semantic theme value should update every component that uses it. Create and edit should share one editor. Changing language must not change record meaning or statistics.
 
-课程交付同时遵循 [HAMK 5 分验收清单](./course-grade-5-checklist.md)。评分是累加的：最终必须同时有 SQLite 和 server app、真实的新增 RN 特性，以及全员 RN 贡献。本文的“第一阶段”仅指基础工程，不是最终课程交付。
+The course delivery also follows the [HAMK grade 5 checklist](./course-grade-5-checklist.md). The grade is cumulative: the final submission needs both SQLite and a server app, real additional RN features, and RN work from every member. “Phase 1” here means the foundation only, not the final course submission.
 
-## 推荐技术
+## Recommended stack
 
-| 用途 | 决策 |
+| Purpose | Decision |
 | --- | --- |
-| 应用基础 | Expo 当前稳定模板、React Native 默认架构、TypeScript strict |
-| 页面导航 | Expo Router；`src/app` 只放路由、布局和参数转交 |
-| 样式 | React Native StyleSheet + 类型化主题 + 自建公共组件 |
-| 临时状态 | React 的 useState / useReducer，保留在所属功能中 |
-| 跨页面状态 | 小型 Zustand store，保存设置、加载状态和记录缓存；数据库是持久化来源 |
-| 本地记录 | expo-sqlite，经统一 repository 读写并管理 schema 迁移 |
-| 云端业务 | 纳入课程交付；当前优先选择 Azure server app，具体服务待定，原生端实际调用 |
-| 多语言 | i18next / react-i18next，中文、英文、芬兰语，稳定翻译 key |
-| 基本验证 | ESLint、TypeScript、关键业务及存储测试、Expo 依赖检查 |
+| App foundation | Current Expo stable template, React Native default architecture, TypeScript strict mode |
+| Navigation | Expo Router; `src/app` contains routes, layouts, and parameter forwarding only |
+| Styling | React Native StyleSheet, typed theme, and shared components |
+| Local state | React `useState` / `useReducer`, kept inside the owning feature |
+| Cross-screen state | Small Zustand store for settings, loading state, and record cache; the database is the source of persistence |
+| Local records | `expo-sqlite` through one repository with schema migrations |
+| Cloud work | Required for the course; Azure is the current preference, with an actual client call |
+| Localisation | i18next / react-i18next with stable keys for English, Finnish, and Chinese |
+| Baseline checks | ESLint, TypeScript, focused business/storage tests, and Expo dependency checks |
 
-依赖按 Expo SDK 的兼容版本安装并提交 lockfile。日常产品开发以 development build 为目标，最初的纯界面验证可使用 Expo Go。保持 Expo CNG，通过 app config 和 config plugins 维护原生配置。
+Install Expo-compatible dependency versions and commit the lockfile. Target development builds for normal work; Expo Go is acceptable for early UI checks. Keep Expo CNG and maintain native configuration through app config and config plugins.
 
-暂不引入通用 CRUD 框架、复杂依赖注入容器或完整离线同步系统。接入真实后端时，再确定 API 缓存和同步规则；SQLite 不会因为替换一个函数就自动获得云同步。
+Do not add a generic CRUD framework, a complex dependency-injection container, or a full offline-sync system before it is needed. Decide API caching and sync rules when the real backend is connected; replacing one function does not make SQLite cloud-synchronised.
 
-服务器不是可省略的远期功能。基础工程之后安排适量云端业务并部署验证，例如云端备份管理；本地记录保留完整 CRUD。当前优先云平台是 Azure，服务器业务、托管服务和云端数据库由团队确定，至少完成客户端实际使用的服务，不能只建立云账号或展示 mock。无需因此提前实现复杂自动同步。
+The server is a required later deliverable, not an optional idea. After the foundation, implement and deploy a small cloud feature such as backup management. Keep daily records in SQLite and do not force automatic multi-device sync into the first version. Azure services, server scope, hosting, and cloud database are team decisions, but the client must call the deployed service; an account, health endpoint, or mock-only server is not enough.
 
-## 目录和边界
+## Structure and boundaries
 
 ```text
 src/
-  app/                         Expo Router 路由和根布局
-  features/                    页面和完整业务流程
+  app/                         Expo Router routes and root layout
+  features/                    Screens and complete feature flows
     home/
     diary/
     food/
@@ -47,41 +47,39 @@ src/
     insights/
     profile/
   design-system/
-    tokens/                    颜色、字体、间距、圆角、动效
-    components/                Button、Text、Card、Choice、Slider、Sheet、Toast
+    tokens/                    Colors, type, spacing, radius, motion
+    components/                Button, Text, Card, Choice, Slider, Sheet, Toast
     ThemeProvider.tsx
   domain/
-    records/                   六类记录的类型、code、校验、日期与单位规则
-    analytics/                 与界面和语言无关的统计函数
+    records/                   Six record types, codes, validation, date and unit rules
+    analytics/                 UI- and language-independent statistics
   data/
-    repositories/              统一读写接口及实现
-    sqlite/                    数据库初始化、查询、迁移
-    api/                       云端请求、响应校验和异常处理
-  state/                       共用状态和记录缓存
+    repositories/              Shared read/write interfaces and implementations
+    sqlite/                    Database setup, queries, and migrations
+    api/                       Cloud requests, response validation, and errors
+  state/                       Shared state and record cache
   i18n/
-    locales/                   en / fi / zh，按功能分 namespace
+    locales/                   en / fi / zh, grouped by feature namespace
 assets/
 docs/
-tooling/                       必要的检查脚本和 ESLint 规则
+tooling/                       Required checks and ESLint rules
 ```
 
-目录随实际代码创建，不预先生成空文件夹。每个功能仅公开自己的页面或明确接口；其他功能不能深入导入它的内部文件。
+Create folders with their implementation; do not create empty placeholder trees. Each feature exposes its screens or explicit public interfaces. Other features must not import its internal files.
 
-依赖约束：路由调用功能；功能调用设计系统、domain 和共用记录服务；数据层实现持久化。domain 不依赖 React、Expo、数据库或翻译库。页面不直接读写 SQLite，不自行建立第二份记录状态。
+Routes call features. Features call the design system, domain rules, and shared record service. The data layer owns persistence. The domain layer must not depend on React, Expo, the database, or the translation library. Screens must not read SQLite directly or maintain a second record state.
 
-复杂记录流程在所属功能内使用有类型的步骤状态和返回逻辑；导航负责页面与弹层，流程状态负责步骤与草稿。六类记录的流程保留各自的分叉，不为了共用组件而压缩成一个通用表单。
+Complex record flows keep typed steps and back behavior inside their feature. Navigation owns screens and sheets; the flow owns the draft. Keep the six branches distinct instead of forcing every feature into one generic form.
 
-## 设计系统：三个层次
+## Design system: three layers
 
-### 1. 基础值
+### 1. Foundation values
 
-只在这里定义实际色值和尺寸，例如米色、棕色、玫瑰色、间距和字号。
+Define raw colors and dimensions only here: warm canvas, brown text, rose accents, spacing, type sizes, and radii. Keep the prototype's warm direction with a beige canvas, cream cards, dark brown text, and feature colors such as water blue, coffee brown, and tea brown. Confirm exact values with component previews and contrast checks.
 
-保留原型目前的暖色方向：米色画布、奶油色卡片、深棕正文，配合饮水蓝、咖啡棕、茶色等功能色。具体色值在组件样板和对比度验证后确定。
+### 2. Semantic theme
 
-### 2. 语义主题
-
-页面使用“用途”，不使用原色名称。主题包含浅色、深色，系统模式选择其中一种。
+Screens use purpose-based names rather than raw color names. Support light and dark themes, with system mode selecting one.
 
 ```text
 colors.surface.canvas / card
@@ -95,18 +93,18 @@ colors.severity.mild / moderate / severe
 spacing / typography / radius / motion
 ```
 
-每个有色背景同时定义文字色、边框及选中状态，防止暗色模式只换背景而忘记文字。程度色与记录分类色分别定义；不能仅靠颜色传达选中状态或程度，保留文字、图标或选中标记。
+Every colored background also defines its text color, border, and selected state. Severity colors and record-category colors are separate. Never use color alone to communicate selection or severity; retain text, an icon, or a selected marker.
 
-### 3. 公共组件
+### 3. Shared components
 
-页面使用 `Button variant="primary"`、`Choice selected`、`Text variant="body"`，不分别重写背景、字体和按压状态。修改 Button 的统一规格，所有保存按钮同步变化。
+Screens use `Button variant="primary"`, `Choice selected`, and `Text variant="body"` instead of rewriting colors, type, and pressed states. One Button change should update every save action.
 
-第一批组件只覆盖实际流程：Screen、Text、Button、IconButton、Card、Choice/ChoiceGroup、Slider、Stepper、Sheet、Toast、必要的输入控件。交互组件统一处理可点击区域、加载、禁用、选中、反馈与无障碍属性。
+The first component set covers the real flows: Screen, Text, Button, IconButton, Card, Choice/ChoiceGroup, Slider, Stepper, Sheet, Toast, and required inputs. Components own hit targets, loading, disabled, selected, feedback, and accessibility behavior.
 
-主题示意：
+Theme shape example:
 
 ```ts
-// 色值只出现在主题定义中。
+// Raw values live only in the theme definition.
 const lightTheme = {
   colors: {
     surface: { canvas: '#F6F1E9', card: '#FFFCF7' },
@@ -117,71 +115,71 @@ const lightTheme = {
   },
 } as const;
 
-// 公共 Button 读取主题，功能页面不提供自定义色值。
+// Shared Button reads the theme; feature screens provide no raw color.
 // <Button variant="primary" onPress={save}>{t('common.save')}</Button>
 ```
 
-上述只展示结构，不是完成的组件或完整主题。间距使用统一阶梯；字体使用 caption、label、body、sectionTitle、pageTitle 等命名规格。手势坐标、进度和计算所得尺寸等动态值不属于固定设计 token。
+This illustrates the structure, not a complete theme. Use a spacing scale and named type styles such as `caption`, `label`, `body`, `sectionTitle`, and `pageTitle`. Gesture coordinates, progress values, and calculated dimensions are dynamic values, not fixed design tokens.
 
-浅色和深色都符合同一个 Theme 类型；类型描述字段和用途，不把浅色的具体色值锁进类型。字体先用系统字体，正文从 16、辅助文字从 14 起步。交互区域统一至少 48 个 RN 布局单位，这是产品触控规范。系统字体缩放由平台处理，不再手动重复放大。组件集中响应减少动效设置。
+Light and dark themes share one `Theme` type. The type describes purpose, not a light-theme color literal. Start with system fonts, 16 or larger for body text, and 14 or larger for supporting text. Interactive areas should be at least 48 RN layout units. Let the platform handle font scaling and centralise motion-reduction behavior.
 
-配色以 WCAG 2.2 AA 为目标：普通文字对比度至少 4.5:1；大字（按 WCAG 定义）至少 3:1；识别控件及其状态所必需的图标、边界与相邻颜色至少 3:1。浅色、深色主题都核对 default、pressed、selected、error 状态的语义前景/背景色对。
+Target WCAG 2.2 AA: 4.5:1 for normal text, 3:1 for large text, and 3:1 for essential control icons, borders, and adjacent colors. Check default, pressed, selected, and error foreground/background pairs in both themes.
 
-## 数据先于显示文字
+## Data before display text
 
-现有原型的 details 是宽泛 Record，保存了中文的餐次、症状、感受；部分统计通过标题摘要中的文字匹配。迁移时改为六类明确类型组成的联合类型，分别定义必要字段。
+The early prototype used a broad `Record` with translated meal, symptom, and feeling strings; some statistics matched titles. Migrate to a union of six explicit record types with required fields.
 
-例如记录中保存 `symptomCode: 'bloating'`，界面按语言显示“腹胀”、`Bloating` 或 `Turvotus`。严重程度、餐次、饮品类型也使用稳定 code。用户填写的食物名称和备注保留原文，不拿它们当翻译 key。
+Store stable codes such as `symptomCode: 'bloating'`; render the active locale's label (for example, English “Bloating” or Finnish “Turvotus”). Severity, meal, and drink type also use stable codes. Preserve user-entered food names and notes as entered; they are not translation keys.
 
-预先约定 ID、事件时间与日记所属日期、时区、修改时间和 schemaVersion。水量内部统一 ml，睡眠时长内部统一分钟；界面可显示其他单位。跨午夜的睡眠明确归属日期。标题和摘要从记录生成，不另存一份容易过期的展示文字。食物关联分析使用分类信息，不依赖对中英文字串的正则判断。
+Define IDs, event time, diary date, timezone, modified time, and `schemaVersion`. Store water in ml and sleep duration in minutes; convert only for display. Define which diary date owns sleep across midnight. Derive titles and summaries from records instead of storing stale display strings. Food pattern analysis should use category data, not regular expressions over translated text.
 
-## 必须执行的统一规则
+## Rules to enforce
 
-1. 页面不写固定色值、独立字号、圆角或固定间距规格；使用 theme token。
-2. 按钮、选项、滑块、弹层和保存反馈使用公共组件。
-3. 新增和编辑共用 Editor，区别仅在初始值和保存目标。
-4. 表单草稿留在功能内，汇总和图表从记录派生；不维护第二份汇总数据。
-5. 数据只经过统一记录服务读写；数据库成功写入后更新共用缓存。
-6. 内置标签使用稳定翻译 key；业务数据不依赖显示语言。
-7. 页面和选项支持芬兰语换行与系统字体放大；不能全局禁止字体缩放或把正文裁切来掩盖问题。
-8. 共享主题、公共组件和数据契约的修改需要指定成员审查。
+1. Screens do not contain raw colors, private type sizes, radii, or spacing; use theme tokens.
+2. Buttons, choices, sliders, sheets, and save feedback use shared components.
+3. Create and edit share one Editor; only the initial values and save target differ.
+4. Keep drafts inside the feature; derive summaries and charts from records instead of a second aggregate state.
+5. All writes go through the shared record service; update the shared cache only after a successful database write.
+6. Built-in labels use stable translation keys; business data never depends on display language.
+7. Support Finnish wrapping and system font scaling; do not disable scaling or clip text to hide layout problems.
+8. A named teammate reviews changes to shared themes, components, and data contracts.
 
-用 ESLint 的导入限制执行模块边界，用颜色字面量和指定样式属性的检查执行 token 规则。规则对业务文件生效，主题定义、公共组件实现及有说明的动态计算有明确例外。仅有文档约定不能阻止重复样式。
+Use ESLint import boundaries plus checks for color literals and restricted style properties. Apply rules to feature files, with explicit exceptions for theme definitions, shared component internals, and documented dynamic calculations. Documentation alone cannot prevent duplicate styles.
 
-AGENTS.md 和 CLAUDE.md 均指向根目录 PROJECT_GUIDE.md，再按需阅读本方案和课程清单，不复制两套规范。
+`AGENTS.md` and `CLAUDE.md` point to `PROJECT_GUIDE.md`; read this plan and the course checklist as needed instead of copying the rules.
 
-## 第一阶段交付与验收
+## Phase 1 delivery and acceptance
 
-先搭底座，再做排便完整样板，随后团队按样板并行迁移其他功能。
+Build the foundation first, then the complete bowel flow, and let the team migrate the other features in parallel.
 
-底座交付：Expo 路由、主题切换、多语言、公共组件预览页、SQLite 初始化和记录接口、检查命令和 CI。预览页展示组件的默认、按下、选中、禁用、加载、错误状态，以及浅色/深色和长文字。
+Foundation: Expo routes, theme switching, localisation, component gallery, SQLite setup and record interface, check commands, and CI. The gallery shows default, pressed, selected, disabled, loading, and error states in both themes and with long text.
 
-第一条完整路径：排便新增 → 保存轻反馈 → 首页/Diary 查看 → 同一表单编辑 → 删除 → 重启后检查持久化。
+First complete path: create bowel entry -> brief save feedback -> view on Home/Diary -> edit in the same form -> delete -> verify after restart.
 
-后续课程交付阶段还必须完成：云端业务及原生端 API 调用、课件未覆盖的真实 RN 特性、其他记录流程、GitHub 和任务看板、三位成员的 RN 贡献与交叉讲解。逐项按课程验收清单留存证据。
+The later course delivery must also include the cloud feature and native API call, a real RN feature not covered in class, the other record flows, GitHub and a task board, and RN contributions plus cross-explanations from all three members. Keep evidence against the course checklist.
 
-验收标准：
+Acceptance checks:
 
-- 修改主题中的主操作色，所有主操作组件同步变化。
-- 浅/深色下核对各状态的语义前景/背景色对，对比度达到上述目标；选中与程度有颜色以外的可见线索。
-- 中/英/芬和浅/深色下，选项、弹层和正文均能正常阅读；字体放大时仍可操作。
-- 新增、编辑复用流程，已有值正确回填，取消不覆盖已存记录。
-- 保存失败不显示成功；重复点击不会写两条；重启后数据保留。
-- 切换语言不改变统计结果，schema 迁移与记录读取经过验证。
-- 检查能够发现功能页面的硬编码色值和违规导入。
+- Changing the primary action token updates every primary action.
+- Foreground/background contrast meets the target in light and dark states; selected and severity states have a non-color cue.
+- Chinese, English, Finnish, both themes, and larger text remain readable and usable.
+- Create/edit share the flow, refill existing values, and cancel without overwriting saved data.
+- Failed saves do not show success; repeated taps do not create duplicates; data survives restart.
+- Language changes do not change statistics; schema migration and reads are tested.
+- Checks detect raw feature colors and invalid imports.
 
-不以搭出很多空目录或安装很多库作为基础完成标准。
+Do not treat empty folders or many installed libraries as foundation completion.
 
-## 官方依据
+## Official references
 
-- WCAG 2.2 配色：[文字对比 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)、[非文本对比 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)、[颜色使用 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)。
-- React Native 推荐使用框架：[Environment setup](https://reactnative.dev/docs/environment-setup)
-- Expo Router：[Introduction](https://docs.expo.dev/router/introduction/)
-- Expo TypeScript：[Guide](https://docs.expo.dev/guides/typescript/)
-- Expo 原生工程管理：[Continuous Native Generation](https://docs.expo.dev/workflow/continuous-native-generation/)
-- Expo 本地存储：[SQLite](https://docs.expo.dev/versions/latest/sdk/sqlite/)
-- Expo 开发构建：[Introduction](https://docs.expo.dev/develop/development-builds/introduction/)
-- React Native 样式：[Style](https://reactnative.dev/docs/style)
-- Unistyles 3 原生与 Expo Go 限制：[Getting started](https://www.unistyl.es/v3/start/getting-started/)
+- WCAG 2.2 contrast: [1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html), [1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html), [1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html).
+- React Native environment: [Environment setup](https://reactnative.dev/docs/environment-setup)
+- Expo Router: [Introduction](https://docs.expo.dev/router/introduction/)
+- Expo TypeScript: [Guide](https://docs.expo.dev/guides/typescript/)
+- Expo native project management: [Continuous Native Generation](https://docs.expo.dev/workflow/continuous-native-generation/)
+- Expo local storage: [SQLite](https://docs.expo.dev/versions/latest/sdk/sqlite/)
+- Expo development builds: [Introduction](https://docs.expo.dev/develop/development-builds/introduction/)
+- React Native styling: [Style](https://reactnative.dev/docs/style)
+- Unistyles 3 and Expo Go limits: [Getting started](https://www.unistyl.es/v3/start/getting-started/)
 
-本方案优先采用 React Native 原生样式能力。NativeWind、Unistyles、Tamagui 可解决特定样式需求，但都不能替代 token、共用组件和可执行约束。
+This plan prefers React Native's built-in styling. NativeWind, Unistyles, and Tamagui can solve specific needs, but none replaces tokens, shared components, and enforceable checks.

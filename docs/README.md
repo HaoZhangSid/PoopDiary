@@ -1,11 +1,11 @@
-# Poop Diary 项目文档
+# Poop Diary project documentation
 
-先读根目录的 [PROJECT_GUIDE.md](../PROJECT_GUIDE.md)。它是组员和 Agent 的统一入口，用简明英文列出项目现状、产品规则、样式与数据规范、Azure 方向、协作方式和实际运行命令。
+Start with the root [PROJECT_GUIDE.md](../PROJECT_GUIDE.md). It is the shared entry point for teammates and agents, covering the current state, product rules, design and data conventions, Azure direction, collaboration, and run commands.
 
-- [HAMK 5 分验收清单](./course-grade-5-checklist.md)：评分原文、累积条件、当前缺口、团队分工和验收证据。
-- [Expo 基础方案](./expo-foundation-plan.md)：目录、主题、公共组件、数据与状态边界、自动检查和第一阶段样板。
-- [Expo 运行说明](../apps/mobile/README.md)：已实现范围、启动、检查和验证限制。
+- [HAMK grade 5 checklist](./course-grade-5-checklist.md): source criteria, cumulative requirements, open gaps, team ownership, and evidence.
+- [Expo foundation plan](./expo-foundation-plan.md): structure, theme, shared components, data/state boundaries, checks, and the first implementation slice.
+- [Expo run guide](../apps/mobile/README.md): implemented scope, startup, checks, and verification limits.
 
-根目录的 AGENTS.md 与 CLAUDE.md 均指向同一份主指南，不另外复制规范。Azure 是当前优先云平台；具体服务和部署方案待团队确定。
+The root `AGENTS.md` and `CLAUDE.md` both point to the same guide; do not maintain a second set of rules. Azure is the current preferred cloud platform; the exact services and deployment plan remain a team decision.
 
-计划和任务应注明对应验收编号。实际实现与证据通过后才标记完成。课程交付要求以已核对的 Moodle 标准和教师最新说明为准。
+Plans and tasks should name the relevant checklist item. Mark work complete only after the implementation and its evidence are available. The latest Moodle criteria and teacher instructions take precedence for submission.
