@@ -24,7 +24,7 @@ export type Theme = {
   spacing: { xs: number; sm: number; md: number; lg: number; xl: number; xxl: number };
   radius: { sm: number; md: number; lg: number; pill: number };
   typography: Record<TextVariant, TextStyle>;
-  controls: { minimumTouchTarget: number; choiceTileHeight: number; icon: number; smallIcon: number; borderWidth: number; selectedBorderWidth: number; contentWidth: number };
+  controls: { minimumTouchTarget: number; choiceTileHeight: number; icon: number; smallIcon: number; borderWidth: number; selectedBorderWidth: number; contentWidth: number; quickLogCardWidth: number };
   motion: { fast: number; normal: number; pressedScale: number };
 };
 
@@ -38,9 +38,9 @@ const shared = {
     sectionTitle: { fontSize: 20, lineHeight: 26, fontWeight: '700', letterSpacing: -0.6 },
     pageTitle: { fontSize: 32, lineHeight: 35, fontWeight: '700', letterSpacing: -1.5 },
     heroTitle: { fontSize: 40, lineHeight: 42, fontWeight: '400', letterSpacing: -1.8 },
-    homeSectionTitle: { fontSize: 27, lineHeight: 32, fontWeight: '400', letterSpacing: -1 },
+    homeSectionTitle: { fontSize: 20, lineHeight: 26, fontWeight: '400', letterSpacing: -0.6 },
   } satisfies Record<TextVariant, TextStyle>,
-  controls: { minimumTouchTarget: 48, choiceTileHeight: 104, icon: 20, smallIcon: 16, borderWidth: 1, selectedBorderWidth: 2, contentWidth: 680 },
+  controls: { minimumTouchTarget: 48, choiceTileHeight: 104, icon: 20, smallIcon: 16, borderWidth: 1, selectedBorderWidth: 2, contentWidth: 680, quickLogCardWidth: 132 },
   motion: { fast: 120, normal: 180, pressedScale: 0.98 },
 };
 

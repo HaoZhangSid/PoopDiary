@@ -24,16 +24,15 @@ export function HomeScreen() {
   const today = localDateKey(now);
   const summary = summarizeToday(records, today);
   const sleep = summary.sleepDurationMinutes;
-  // The Web reference keeps three compact cards on the first row below 820px.
-  // Only the narrow phone breakpoint lets the final two cards expand to half width.
+  // Keep the compact 3 + 2 overview rhythm used by the Web reference on phones.
   const narrowPhone = width <= 560;
   const tablet = width <= 820;
-  const metrics: { kind: RecordKind; icon: LucideIcon; value: string; label: string; suffix: string; wide?: boolean }[] = [
+  const metrics: { kind: RecordKind; icon: LucideIcon; value: string; label: string; suffix: string }[] = [
     { kind: 'food', icon: Utensils, value: String(summary.counts.food), label: t('mealsLabel'), suffix: t('times') },
     { kind: 'bowel', icon: CircleDot, value: String(summary.counts.bowel), label: t('bowelLabel'), suffix: t('times') },
     { kind: 'symptom', icon: Activity, value: String(summary.counts.symptom), label: t('symptomLabel'), suffix: t('entry') },
-    { kind: 'exercise', icon: Dumbbell, value: String(summary.counts.exercise), label: t('exerciseLabel'), suffix: t('times'), wide: true },
-    { kind: 'sleep', icon: Moon, value: sleep === undefined ? '—' : `${Math.floor(sleep / 60)}h ${sleep % 60}m`, label: t('sleepLabel'), suffix: t('lastNight'), wide: true },
+    { kind: 'exercise', icon: Dumbbell, value: String(summary.counts.exercise), label: t('exerciseLabel'), suffix: t('times') },
+    { kind: 'sleep', icon: Moon, value: sleep === undefined ? '—' : `${Math.floor(sleep / 60)}h ${sleep % 60}m`, label: t('sleepLabel'), suffix: t('lastNight') },
   ];
   const quickItems: QuickItem[] = [
     { kind: 'food', label: t('food', { ns: 'common' }), icon: Utensils, tone: theme.colors.entry.food },
@@ -105,21 +104,20 @@ export function HomeScreen() {
 
 function QuickLogCard({ item, onPress }: { item: QuickItem; onPress: () => void }) {
   const theme = useTheme();
-  return <Pressable accessibilityRole="button" accessibilityLabel={item.label} onPress={onPress} style={({ pressed }) => ({ width: 148, minHeight: theme.controls.minimumTouchTarget * 1.65, flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm, padding: theme.spacing.sm, borderWidth: theme.controls.borderWidth, borderColor: theme.colors.border.default, borderRadius: theme.radius.lg, backgroundColor: pressed ? item.tone.bg : theme.colors.surface.card })}>
+  return <Pressable accessibilityRole="button" accessibilityLabel={item.label} onPress={onPress} style={({ pressed }) => ({ width: theme.controls.quickLogCardWidth, minHeight: theme.controls.minimumTouchTarget * 1.65, flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm, padding: theme.spacing.sm, borderWidth: theme.controls.borderWidth, borderColor: theme.colors.border.default, borderRadius: theme.radius.lg, backgroundColor: pressed ? item.tone.bg : theme.colors.surface.card })}>
     <View style={{ width: theme.controls.icon + theme.spacing.md, height: theme.controls.icon + theme.spacing.md, alignItems: 'center', justifyContent: 'center', borderRadius: theme.radius.sm, backgroundColor: item.tone.bg }}><item.icon size={theme.controls.icon} color={item.tone.fg} /></View>
     <AppText variant="label" style={{ flex: 1 }} numberOfLines={1}>{item.label}</AppText>
     <ArrowRight size={theme.controls.smallIcon} color={theme.colors.text.secondary} />
   </Pressable>;
 }
 
-function MetricCard({ kind, icon: Icon, value, label, suffix, wide, layout, onPress }: { kind: RecordKind; icon: LucideIcon; value: string; label: string; suffix: string; wide?: boolean; layout: 'desktop' | 'tablet' | 'phone'; onPress: () => void }) {
+function MetricCard({ kind, icon: Icon, value, label, suffix, layout, onPress }: { kind: RecordKind; icon: LucideIcon; value: string; label: string; suffix: string; layout: 'desktop' | 'tablet' | 'phone'; onPress: () => void }) {
   const theme = useTheme();
   const tone = theme.colors.entry[kind];
-  const compactPhone = layout === 'phone';
   const tabletCard = layout === 'tablet';
   return <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress} style={({ pressed }) => ({
-    flexGrow: compactPhone && wide ? 1 : 0,
-    flexBasis: layout === 'desktop' ? '18%' : compactPhone && wide ? '45%' : '30%',
+    flexGrow: 0,
+    flexBasis: layout === 'desktop' ? '18%' : '30%',
     minWidth: layout === 'desktop' ? 100 : 0,
     minHeight: theme.controls.minimumTouchTarget * 2.25,
     gap: theme.spacing.sm,
