@@ -16,6 +16,7 @@ export function recordTitle(record: DiaryRecord) {
   if (record.kind === 'bowel') return record.details.stoolType === 'unknown'
     ? i18n.t('unknown', { ns: 'common' })
     : i18n.t('type', { ns: 'common', type: record.details.stoolType });
+  if (record.kind === 'symptom') return record.details.symptoms.map((entry) => i18n.t(`symptoms.${entry.code}`, { ns: 'symptom' })).join(' · ');
   return i18n.t(record.kind, { ns: 'common' });
 }
 export function recordSummary(record: DiaryRecord) {
@@ -28,6 +29,12 @@ export function recordSummary(record: DiaryRecord) {
     ].filter(Boolean).join(' · ');
   }
   if (record.kind === 'food') return record.details.items.map((item) => item.name).join(' + ');
-  if (record.kind === 'water') return `${record.details.volumeMl} ml`;
+  if (record.kind === 'water') {
+    const beverage = record.details.beverage === 'other' && record.details.customName
+      ? record.details.customName
+      : i18n.t(`beverages.${record.details.beverage}`, { ns: 'water' });
+    return `${record.details.volumeMl} ml · ${beverage}`;
+  }
+  if (record.kind === 'symptom') return record.details.symptoms.map((entry) => i18n.t(`severities.${entry.severity}`, { ns: 'symptom' })).join(' · ');
   return record.details.note ?? '';
 }

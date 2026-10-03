@@ -6,11 +6,17 @@ import zh from './locales/zh';
 import enBowel from '@/features/bowel/messages/en';
 import fiBowel from '@/features/bowel/messages/fi';
 import zhBowel from '@/features/bowel/messages/zh';
+import enWater from '@/features/water/messages/en';
+import fiWater from '@/features/water/messages/fi';
+import zhWater from '@/features/water/messages/zh';
+import enSymptom from '@/features/symptoms/messages/en';
+import fiSymptom from '@/features/symptoms/messages/fi';
+import zhSymptom from '@/features/symptoms/messages/zh';
 
 export const resources = {
-  en: { ...en, bowel: enBowel },
-  fi: { ...fi, bowel: fiBowel },
-  zh: { ...zh, bowel: zhBowel },
+  en: { ...en, bowel: enBowel, water: enWater, symptom: enSymptom },
+  fi: { ...fi, bowel: fiBowel, water: fiWater, symptom: fiSymptom },
+  zh: { ...zh, bowel: zhBowel, water: zhWater, symptom: zhSymptom },
 };
 
 const i18n = createInstance();

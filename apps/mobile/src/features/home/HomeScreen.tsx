@@ -46,12 +46,11 @@ export function HomeScreen() {
     </View>
     <View style={{ gap: theme.spacing.sm }}>
       <AppText variant="sectionTitle" accessibilityRole="header">{t('quickTitle')}</AppText>
-      <Pressable accessibilityRole="button" accessibilityLabel={t('quickLog')} onPress={() => router.push('/bowel')}
-        style={({ pressed }) => ({ minHeight: theme.controls.minimumTouchTarget, padding: theme.spacing.sm, flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm, backgroundColor: pressed ? theme.colors.surface.subtle : theme.colors.surface.card, borderWidth: theme.controls.borderWidth, borderColor: theme.colors.border.control, borderRadius: theme.radius.md })}>
-        <View style={{ padding: theme.spacing.sm, borderRadius: theme.radius.sm, backgroundColor: theme.colors.entry.bowel.bg }}><CircleDot size={theme.controls.icon} color={theme.colors.entry.bowel.fg} /></View>
-        <AppText variant="label" style={{ flex: 1 }}>{t('bowel', { ns: 'common' })}</AppText>
-        <ArrowRight size={theme.controls.smallIcon} color={theme.colors.text.secondary} />
-      </Pressable>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.spacing.sm }}>
+        <QuickLogButton label={t('bowel', { ns: 'common' })} icon={CircleDot} tone={theme.colors.entry.bowel} onPress={() => router.push('/bowel')} />
+        <QuickLogButton label={t('water', { ns: 'common' })} icon={Droplets} tone={theme.colors.entry.water} onPress={() => router.push('/water/index')} />
+        <QuickLogButton label={t('symptom', { ns: 'common' })} icon={Activity} tone={theme.colors.entry.symptom} onPress={() => router.push('/symptom/index')} />
+      </View>
     </View>
     <View style={{ gap: theme.spacing.sm, paddingTop: theme.spacing.sm }}>
       <AppText variant="sectionTitle" accessibilityRole="header">{t('overview')}</AppText>
@@ -85,4 +84,14 @@ export function HomeScreen() {
       </View> : summary.entries.slice(0, 6).map((record) => <RecordCard layout="timeline" key={record.id} record={record} onPress={() => router.push({ pathname: '/diary', params: { entry: record.id } })} />)}
     </View>
   </Screen>;
+}
+
+function QuickLogButton({ label, icon: Icon, tone, onPress }: { label: string; icon: LucideIcon; tone: { bg: string; fg: string }; onPress: () => void }) {
+  const theme = useTheme();
+  return <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress}
+    style={({ pressed }) => ({ flex: 1, minWidth: theme.controls.minimumTouchTarget * 4, minHeight: theme.controls.minimumTouchTarget, padding: theme.spacing.sm, flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm, backgroundColor: pressed ? tone.bg : theme.colors.surface.card, borderWidth: theme.controls.borderWidth, borderColor: theme.colors.border.control, borderRadius: theme.radius.md })}>
+    <View style={{ padding: theme.spacing.sm, borderRadius: theme.radius.sm, backgroundColor: tone.bg }}><Icon size={theme.controls.icon} color={tone.fg} /></View>
+    <AppText variant="label" style={{ flex: 1 }}>{label}</AppText>
+    <ArrowRight size={theme.controls.smallIcon} color={theme.colors.text.secondary} />
+  </Pressable>;
 }

@@ -2,7 +2,7 @@
 
 Updated: 2026-10-03.
 
-**Now:** Web reference at the root; Expo SDK 57 app in `apps/mobile` with shared themes, three languages, SQLite and bowel CRUD. The other five native flows and Azure are pending. Native device verification is still required.
+**Now:** Web reference at the root; Expo SDK 57 app in `apps/mobile` with shared themes, three languages, SQLite, and native bowel, symptom, and water CRUD samples. Food, exercise, sleep, insights, and Azure are pending. Native device verification is still required.
 
 **Direction:** Expo + TypeScript + Expo Router; shared themed components; SQLite; Azure. Azure services and cloud scope remain open. Keep Web and native dependencies separate. Native feature work follows the foundation plan.
 

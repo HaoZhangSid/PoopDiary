@@ -18,7 +18,7 @@ function shiftDate(key: string, days: number) {
 
 export function DiaryScreen() {
   const theme = useTheme();
-  const { t, i18n } = useTranslation(['diary', 'common', 'bowel']);
+  const { t, i18n } = useTranslation(['diary', 'common', 'bowel', 'symptom']);
   const records = useAppStore((state) => state.records);
   const deleteRecord = useAppStore((state) => state.deleteRecord);
   const restoreRecord = useAppStore((state) => state.restoreRecord);
@@ -71,6 +71,10 @@ export function DiaryScreen() {
           {selectedRecord.details.bloating && <AppText>{t('bloating', { ns: 'bowel' })} · {t(`severities.${selectedRecord.details.bloating}`, { ns: 'bowel' })}</AppText>}
           {selectedRecord.details.urgency && <AppText>{t(`urgencies.${selectedRecord.details.urgency}`, { ns: 'bowel' })}</AppText>}
         </>}
+        {selectedRecord.kind === 'symptom' && <>
+          {selectedRecord.details.symptoms.map((entry) => <AppText key={entry.code}>{t(`symptoms.${entry.code}`, { ns: 'symptom' })} · {t(`severities.${entry.severity}`, { ns: 'symptom' })}</AppText>)}
+          {selectedRecord.details.durationMinutes !== undefined && <AppText>{t('duration', { ns: 'symptom' })} · {selectedRecord.details.durationMinutes} min</AppText>}
+        </>}
         {Boolean(selectedRecord.details.note) && <AppText>{selectedRecord.details.note}</AppText>}
         {Boolean(error) && <AppText tone="danger">{error}</AppText>}
         {confirmDelete ? <>
@@ -78,6 +82,8 @@ export function DiaryScreen() {
           <Button variant="secondary" label={t('cancel', { ns: 'common' })} disabled={busy} onPress={() => setConfirmDelete(false)} />
         </> : <>
           {selectedRecord.kind === 'bowel' && <Button label={t('edit', { ns: 'common' })} onPress={() => { const id = selectedRecord.id; close(); router.push({ pathname: '/bowel/[id]', params: { id } }); }} />}
+          {selectedRecord.kind === 'water' && <Button label={t('edit', { ns: 'common' })} onPress={() => { const id = selectedRecord.id; close(); router.push({ pathname: '/water/[id]', params: { id } }); }} />}
+          {selectedRecord.kind === 'symptom' && <Button label={t('edit', { ns: 'common' })} onPress={() => { const id = selectedRecord.id; close(); router.push({ pathname: '/symptom/[id]', params: { id } }); }} />}
           <Button variant="danger" label={t('delete', { ns: 'common' })} onPress={() => setConfirmDelete(true)} />
         </>}
       </>}
