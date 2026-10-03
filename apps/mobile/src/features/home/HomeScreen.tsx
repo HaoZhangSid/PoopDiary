@@ -44,9 +44,14 @@ export function HomeScreen() {
     { kind: 'sleep', label: t('sleep', { ns: 'common' }), icon: Moon, tone: theme.colors.entry.sleep },
   ];
   const openPath = (path?: string) => { if (path) router.push(path as never); };
-  const compactMetricWidth = metricContainerWidth > 0
-    ? (metricContainerWidth - theme.controls.compactMetricGap * 2) / 3
-    : undefined;
+  // Screen applies the same horizontal padding to every section. Use the
+  // deterministic viewport fallback on the first frame, then replace it with
+  // the measured grid width once the layout is known. This prevents a visible
+  // 31% flex-basis flash that leaves the metric row narrower than the water card.
+  const metricWidthSource = metricContainerWidth > 0
+    ? metricContainerWidth
+    : Math.max(0, Math.min(width, theme.controls.contentWidth) - theme.spacing.md * 2);
+  const compactMetricWidth = (metricWidthSource - theme.controls.compactMetricGap * 2) / 3;
   return <Screen>
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingBottom: theme.spacing.md }}>
       <Pressable accessibilityRole="button" accessibilityLabel={t('appName', { ns: 'common' })} onPress={() => router.replace('/')} style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm }}>
