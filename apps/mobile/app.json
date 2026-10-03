@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "Poop Diary",
+    "slug": "poop-diary",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "poopdiary",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "fi.hamk.poopdiary"
+    },
+    "android": {
+      "package": "fi.hamk.poopdiary",
+      "predictiveBackGestureEnabled": true
+    },
+    "web": {
+      "output": "single",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-sqlite",
+      "expo-localization",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#F6F1E9",
+          "dark": {
+            "backgroundColor": "#1A1411"
+          }
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

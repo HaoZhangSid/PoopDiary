@@ -4,6 +4,7 @@
 
 - [HAMK 5 分验收清单](./course-grade-5-checklist.md)：评分原文、累积条件、当前缺口、团队分工和验收证据。
 - [Expo 基础方案](./expo-foundation-plan.md)：目录、主题、公共组件、数据与状态边界、自动检查和第一阶段样板。
+- [Expo 运行说明](../apps/mobile/README.md)：已实现范围、启动、检查和验证限制。
 
 根目录的 AGENTS.md 与 CLAUDE.md 均指向同一份主指南，不另外复制规范。Azure 是当前优先云平台；具体服务和部署方案待团队确定。
 

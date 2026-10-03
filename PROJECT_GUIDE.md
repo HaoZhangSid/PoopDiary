@@ -2,9 +2,9 @@
 
 Updated: 2026-10-03.
 
-**Now:** Vite/React Web prototype with localStorage. Expo, SQLite and the server are not implemented yet.
+**Now:** Web reference at the root; Expo SDK 57 app in `apps/mobile` with shared themes, three languages, SQLite and bowel CRUD. The other five native flows and Azure are pending. Native device verification is still required.
 
-**Direction:** Expo + TypeScript + Expo Router; shared themed components; SQLite; Azure. Azure services and cloud scope remain open. Apply the native plan to native tasks; ordinary Web fixes stay within their requested scope.
+**Direction:** Expo + TypeScript + Expo Router; shared themed components; SQLite; Azure. Azure services and cloud scope remain open. Keep Web and native dependencies separate. Native feature work follows the foundation plan.
 
 ## Core rules
 
@@ -27,9 +27,11 @@ Updated: 2026-10-03.
 npm ci
 npm run dev
 npm run build
+npm run mobile:web
+npm run check:mobile
 ```
 
-Expo, lint and test commands are not configured yet; use actual package scripts when added.
+For mobile, first run `npm ci` in `apps/mobile`. Its [README](apps/mobile/README.md) covers device startup, checks and exports. Local checks are configured; CI runs once this repository is hosted on GitHub. Do not claim device or cloud verification from a JS export.
 
 ## Details
 

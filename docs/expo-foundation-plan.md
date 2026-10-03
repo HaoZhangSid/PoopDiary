@@ -1,6 +1,6 @@
 # Poop Diary：Expo 基础方案
 
-日期：2026-10-03。本文是迁移前的工程方案，尚未创建或迁移 Expo 应用。
+日期：2026-10-03。基础工程位于 `apps/mobile`，已实现主题、三语、SQLite 和排便 CRUD 样板；其余五类流程及 Azure 待迁移。本文仍包含后续计划。实际命令见 [mobile README](../apps/mobile/README.md)。
 
 团队和 Agent 的日常规则统一见 [PROJECT_GUIDE.md](../PROJECT_GUIDE.md)。
 
