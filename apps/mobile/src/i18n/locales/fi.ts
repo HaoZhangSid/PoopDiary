@@ -27,7 +27,7 @@ export default {
     localData: 'Merkinnät tallennetaan tälle laitteelle.', settingsError: 'Asetusta ei voitu tallentaa.',
   },
   components: {
-    title: 'Komponentit', buttons: 'Painikkeet', choices: 'Valinnat', slider: 'Liukusäädin', stepper: 'Askelpainike',
+    title: 'Komponentit', buttons: 'Painikkeet', iconButtons: 'Kuvakepainikkeet', choices: 'Valinnat', slider: 'Liukusäädin', stepper: 'Askelpainike',
     sheet: 'Ponnahdusikkuna', openSheet: 'Avaa ponnahdusikkuna', longText: 'Tämä pidempi vaihtoehdon teksti rivittyy ilman sisällön leikkaamista',
     selected: 'Valittu', unselected: 'Ei valittu', loading: 'Tallennetaan', disabled: 'Ei käytettävissä',
     feedback: 'Palaute', showFeedback: 'Näytä tallennuspalaute', error: 'Tallentaminen epäonnistui', errorDetail: 'Luonnos on yhä tallessa.',

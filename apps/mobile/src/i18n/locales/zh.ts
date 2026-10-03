@@ -27,7 +27,7 @@ export default {
     localData: '记录保存在当前设备。', settingsError: '设置保存失败。',
   },
   components: {
-    title: '组件预览', buttons: '按钮', choices: '选项', slider: '滑块', stepper: '步进器',
+    title: '组件预览', buttons: '按钮', iconButtons: '图标按钮', choices: '选项', slider: '滑块', stepper: '步进器',
     sheet: '弹层', openSheet: '打开弹层', longText: '这是一项较长的选项文字，会完整换行显示',
     selected: '已选择', unselected: '未选择', loading: '保存中', disabled: '不可用',
     feedback: '反馈', showFeedback: '显示保存反馈', error: '保存失败', errorDetail: '草稿仍在。',

@@ -26,7 +26,7 @@ export default {
     localData: 'Records are stored on this device.', settingsError: 'Could not save this setting.',
   },
   components: {
-    title: 'Components', buttons: 'Buttons', choices: 'Choices', slider: 'Slider', stepper: 'Stepper',
+    title: 'Components', buttons: 'Buttons', iconButtons: 'Icon buttons', choices: 'Choices', slider: 'Slider', stepper: 'Stepper',
     sheet: 'Sheet', openSheet: 'Open sheet', longText: 'A longer option label that wraps without hiding its meaning',
     selected: 'Selected', unselected: 'Not selected', loading: 'Saving', disabled: 'Disabled',
     feedback: 'Feedback', showFeedback: 'Show saved feedback', error: 'Could not save', errorDetail: 'Your draft is still here.',
