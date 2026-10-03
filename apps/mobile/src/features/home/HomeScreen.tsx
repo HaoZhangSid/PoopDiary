@@ -20,6 +20,7 @@ export function HomeScreen() {
   const { t, i18n } = useTranslation(['home', 'common']);
   const records = useAppStore((state) => state.records);
   const [now, setNow] = useState(() => new Date());
+  const [metricContainerWidth, setMetricContainerWidth] = useState(0);
   useEffect(() => { const timer = setInterval(() => setNow(new Date()), 60000); return () => clearInterval(timer); }, []);
   const today = localDateKey(now);
   const summary = summarizeToday(records, today);
@@ -43,6 +44,9 @@ export function HomeScreen() {
     { kind: 'sleep', label: t('sleep', { ns: 'common' }), icon: Moon, tone: theme.colors.entry.sleep },
   ];
   const openPath = (path?: string) => { if (path) router.push(path as never); };
+  const compactMetricWidth = metricContainerWidth > 0
+    ? (metricContainerWidth - theme.controls.compactMetricGap * 2) / 3
+    : undefined;
   return <Screen>
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingBottom: theme.spacing.md }}>
       <Pressable accessibilityRole="button" accessibilityLabel={t('appName', { ns: 'common' })} onPress={() => router.replace('/')} style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm }}>
@@ -69,17 +73,23 @@ export function HomeScreen() {
 
     <View style={{ gap: theme.controls.quickLogSectionGap }}>
       <AppText variant="homeSectionTitle" accessibilityRole="header">{t('quickTitle')}</AppText>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: theme.spacing.sm, paddingRight: theme.spacing.md }}>
+      <ScrollView horizontal style={{ width: '100%', alignSelf: 'stretch' }} showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: theme.spacing.sm, paddingRight: theme.spacing.md }}>
         {quickItems.map((item) => <QuickLogCard key={item.kind} item={item} onPress={() => openPath(item.path)} />)}
       </ScrollView>
     </View>
 
     <View style={{ marginTop: theme.controls.overviewSectionMarginTop }}>
       <AppText variant="homeSectionTitle" accessibilityRole="header">{t('overview')}</AppText>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.controls.compactMetricGap, marginTop: theme.controls.overviewSectionGap }}>
-        {metrics.map((metric) => <MetricCard key={metric.kind} {...metric} layout={tablet ? (narrowPhone ? 'phone' : 'tablet') : 'desktop'} onPress={() => openPath(quickItems.find((item) => item.kind === metric.kind)?.path)} />)}
+      <View
+        onLayout={(event) => {
+          const nextWidth = event.nativeEvent.layout.width;
+          setMetricContainerWidth((currentWidth) => Math.abs(currentWidth - nextWidth) > 0.5 ? nextWidth : currentWidth);
+        }}
+        style={{ width: '100%', alignSelf: 'stretch', flexDirection: 'row', flexWrap: 'wrap', gap: theme.controls.compactMetricGap, marginTop: theme.controls.overviewSectionGap }}
+      >
+        {metrics.map((metric) => <MetricCard key={metric.kind} {...metric} layout={tablet ? (narrowPhone ? 'phone' : 'tablet') : 'desktop'} cardWidth={compactMetricWidth} onPress={() => openPath(quickItems.find((item) => item.kind === metric.kind)?.path)} />)}
       </View>
-      <Pressable accessibilityRole="button" accessibilityLabel={t('water', { ns: 'common' })} onPress={() => openPath('/water/index')} style={({ pressed }) => ({ minHeight: theme.controls.minimumTouchTarget * 1.45, marginTop: theme.controls.overviewMetricToWaterGap, flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm, paddingHorizontal: theme.spacing.md, borderWidth: theme.controls.borderWidth, borderColor: theme.colors.border.default, borderRadius: theme.radius.lg, backgroundColor: pressed ? theme.colors.surface.subtle : theme.colors.surface.card })}>
+      <Pressable accessibilityRole="button" accessibilityLabel={t('water', { ns: 'common' })} onPress={() => openPath('/water/index')} style={({ pressed }) => ({ width: '100%', alignSelf: 'stretch', minHeight: theme.controls.minimumTouchTarget * 1.45, marginTop: theme.controls.overviewMetricToWaterGap, flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm, paddingHorizontal: theme.spacing.md, borderWidth: theme.controls.borderWidth, borderColor: theme.colors.border.default, borderRadius: theme.radius.lg, backgroundColor: pressed ? theme.colors.surface.subtle : theme.colors.surface.card })}>
         <View style={{ width: theme.controls.icon + theme.spacing.md, height: theme.controls.icon + theme.spacing.md, alignItems: 'center', justifyContent: 'center', borderRadius: theme.radius.sm, backgroundColor: theme.colors.entry.water.bg }}><Droplets size={theme.controls.icon} color={theme.colors.entry.water.fg} /></View>
         <View style={{ width: theme.controls.minimumTouchTarget * 2.1, gap: theme.spacing.xs }}><AppText variant="label">{t('water', { ns: 'common' })}</AppText><AppText variant="caption" tone="secondary">{summary.waterMl} {t('waterGoal')}</AppText></View>
         <View style={{ flex: 1, height: theme.spacing.sm, overflow: 'hidden', borderRadius: theme.radius.pill, backgroundColor: theme.colors.surface.subtle }}><View style={{ width: `${Math.min(100, summary.waterMl / 20)}%`, height: '100%', backgroundColor: theme.colors.entry.water.fg }} /></View>
@@ -111,12 +121,13 @@ function QuickLogCard({ item, onPress }: { item: QuickItem; onPress: () => void 
   </Pressable>;
 }
 
-function MetricCard({ kind, icon: Icon, value, label, suffix, layout, onPress }: { kind: RecordKind; icon: LucideIcon; value: string; label: string; suffix: string; layout: 'desktop' | 'tablet' | 'phone'; onPress: () => void }) {
+function MetricCard({ kind, icon: Icon, value, label, suffix, layout, cardWidth, onPress }: { kind: RecordKind; icon: LucideIcon; value: string; label: string; suffix: string; layout: 'desktop' | 'tablet' | 'phone'; cardWidth?: number; onPress: () => void }) {
   const theme = useTheme();
   const tone = theme.colors.entry[kind];
   return <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress} style={({ pressed }) => ({
     flexGrow: 0,
-    flexBasis: layout === 'desktop' ? '18%' : '31%',
+    width: layout === 'desktop' ? undefined : cardWidth,
+    flexBasis: layout === 'desktop' ? '18%' : cardWidth ?? '31%',
     minWidth: layout === 'desktop' ? 100 : 0,
     minHeight: layout === 'desktop' ? theme.controls.minimumTouchTarget * 2.25 : theme.controls.compactMetricHeight,
     gap: layout === 'desktop' ? theme.spacing.sm : theme.spacing.xs,

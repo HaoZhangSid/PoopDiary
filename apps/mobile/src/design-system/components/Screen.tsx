@@ -43,7 +43,7 @@ export function Screen({ children, title, subtitle, onBack, right, footer, scrol
         </View>
       )}
       {scroll
-        ? <ScrollView style={{ flex: 1 }} contentContainerStyle={contentStyle} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag">{children}</ScrollView>
+        ? <ScrollView style={{ flex: 1 }} contentContainerStyle={contentStyle} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag">{children}</ScrollView>
         : <View style={[contentStyle, { flex: 1 }]}>{children}</View>}
       {Boolean(footer) && <View style={[contentStyle, { borderTopWidth: theme.controls.borderWidth, borderColor: theme.colors.border.default }]}>{footer}</View>}
       </KeyboardAvoidingView>
