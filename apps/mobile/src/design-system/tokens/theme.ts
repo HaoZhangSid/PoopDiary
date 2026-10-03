@@ -1,7 +1,7 @@
 import type { TextStyle } from 'react-native';
 
 export type Appearance = 'light' | 'dark' | 'system';
-export type TextVariant = 'caption' | 'label' | 'body' | 'sectionTitle' | 'pageTitle' | 'heroTitle' | 'homeSectionTitle';
+export type TextVariant = 'caption' | 'label' | 'body' | 'sectionTitle' | 'pageTitle' | 'heroTitle' | 'homeSectionTitle' | 'eyebrow' | 'webPageTitle' | 'dateTitle';
 export type ColorPair = { bg: string; fg: string };
 export type ActionColors = { background: string; foreground: string; pressed: string };
 
@@ -38,9 +38,12 @@ const shared = {
     sectionTitle: { fontSize: 20, lineHeight: 26, fontWeight: '700', letterSpacing: -0.6 },
     pageTitle: { fontSize: 32, lineHeight: 35, fontWeight: '700', letterSpacing: -1.5 },
     heroTitle: { fontSize: 40, lineHeight: 42, fontWeight: '400', letterSpacing: -1.8 },
-    homeSectionTitle: { fontSize: 20, lineHeight: 26, fontWeight: '400', letterSpacing: -0.6 },
+    homeSectionTitle: { fontSize: 20, lineHeight: 30, fontWeight: '400', letterSpacing: -0.6 },
+    eyebrow: { fontSize: 10, lineHeight: 12, fontWeight: '800', letterSpacing: 1.4 },
+    webPageTitle: { fontSize: 46, lineHeight: 50, fontWeight: '700', letterSpacing: -2.2 },
+    dateTitle: { fontSize: 24, lineHeight: 30, fontWeight: '400', letterSpacing: -0.5 },
   } satisfies Record<TextVariant, TextStyle>,
-  controls: { minimumTouchTarget: 48, choiceTileHeight: 104, icon: 20, smallIcon: 16, borderWidth: 1, selectedBorderWidth: 2, contentWidth: 680, quickLogCardWidth: 132, quickLogCardHeight: 48, quickLogCardPadding: 9, quickLogIconSize: 28, quickLogIconGlyph: 17, quickLogSectionGap: 11, overviewSectionGap: 12, overviewSectionMarginTop: 12, overviewMetricToWaterGap: 8, compactMetricHeight: 72, compactMetricPadding: 10, compactMetricVerticalPadding: 7, compactMetricGap: 6 },
+  controls: { minimumTouchTarget: 48, choiceTileHeight: 104, icon: 20, smallIcon: 16, borderWidth: 1, selectedBorderWidth: 2, contentWidth: 1120, quickLogCardWidth: 132, quickLogCardHeight: 54, quickLogCardPadding: 10, quickLogIconSize: 30, quickLogIconGlyph: 17, quickLogSectionGap: 15, overviewSectionGap: 22, overviewSectionMarginTop: 12, overviewMetricToWaterGap: 10, compactMetricHeight: 72, compactMetricPadding: 10, compactMetricVerticalPadding: 7, compactMetricGap: 10 },
   motion: { fast: 120, normal: 180, pressedScale: 0.98 },
 };
 

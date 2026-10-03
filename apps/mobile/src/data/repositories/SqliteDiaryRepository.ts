@@ -4,6 +4,7 @@ import { openDiaryDatabase } from '../sqlite/database';
 import { inTransaction, migrateDatabase } from '../sqlite/migrations';
 import type { AsyncSqliteDatabase, DatabaseOpener, SqlValue } from '../sqlite/types';
 import type { DiaryRepository } from './DiaryRepository';
+import { LocalStorageDiaryRepository } from './LocalStorageDiaryRepository';
 
 interface RecordRow {
   id: string;
@@ -178,5 +179,6 @@ export class SqliteDiaryRepository implements DiaryRepository {
 }
 
 export function createDiaryRepository(options: RepositoryOptions = {}): DiaryRepository {
+  if (typeof window !== 'undefined') return new LocalStorageDiaryRepository();
   return new SqliteDiaryRepository(options);
 }

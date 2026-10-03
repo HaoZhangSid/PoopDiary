@@ -104,7 +104,7 @@ function BowelEditorForm({ record }: { record?: BowelRecord }) {
 
   const rowStyle = { flexDirection: 'row' as const, flexWrap: 'wrap' as const, gap: theme.spacing.sm };
   const readableWidth = gridWidth / fontScale;
-  const shapeColumns = readableWidth >= theme.controls.minimumTouchTarget * 13 ? 4 : readableWidth >= theme.controls.minimumTouchTarget * 6 ? 2 : 1;
+  const shapeColumns = readableWidth >= theme.controls.minimumTouchTarget * 10 ? 4 : readableWidth >= theme.controls.minimumTouchTarget * 6 ? 2 : 1;
   const detailColumns = readableWidth >= theme.controls.minimumTouchTarget * 6 ? 2 : 1;
   const severityColumns = readableWidth >= theme.controls.minimumTouchTarget * 6 ? 3 : 1;
   const cellStyle = (columns: number) => ({ width: (gridWidth - theme.spacing.sm * (columns - 1)) / columns });
@@ -138,7 +138,7 @@ function BowelEditorForm({ record }: { record?: BowelRecord }) {
   if (warning) return <SafetyStopScreen warning={warning} onBack={returnFromWarning} />;
 
   const typeName = typeof form.stoolType === 'number' ? t(`types.${form.stoolType}`) : t('unknown');
-  const heading = step === 'type' ? t('shape')
+  const heading = step === 'type' ? 'What is the shape this time?'
     : step === 'feeling' ? (typeof form.stoolType === 'number' ? `Type ${form.stoolType}` : t('unknown'))
     : step === 'sensations' ? t('symptomsHeading')
     : step === 'pain' ? t('painTitle')
@@ -155,9 +155,14 @@ function BowelEditorForm({ record }: { record?: BowelRecord }) {
       // leave the next question scrolled past its heading.
       key={step}
       title={heading}
-      subtitle={`${t('title')} · ${step === 'feeling' ? typeName : t(record ? 'editLabel' : 'quickLabel')}`}
+      subtitle={undefined}
       onBack={back}
       backLabel={t('back')}
+      maxWidth={600}
+      flowBrand
+      flowEyebrow={`${t('title')} · ${record ? t('editLabel') : t('quickLabel')}`}
+      flowStep={stepNumbers[step]}
+      flowTotal={5}
       right={<IconButton icon={X} label={t('close')} onPress={exit} disabled={saving} />}
       footer={(
         <View style={{ gap: theme.spacing.xs }}>
@@ -175,19 +180,12 @@ function BowelEditorForm({ record }: { record?: BowelRecord }) {
       )}
     >
       <View style={{ gap: theme.spacing.lg }} onLayout={(event) => setGridWidth(event.nativeEvent.layout.width)}>
-        <View style={{ gap: theme.spacing.sm }}>
-          <View style={{ height: theme.spacing.xs, borderRadius: theme.radius.pill, backgroundColor: theme.colors.border.default, overflow: 'hidden' }}>
-            <View style={{ width: `${stepNumbers[step] / 5 * 100}%`, height: '100%', backgroundColor: theme.colors.text.primary, borderRadius: theme.radius.pill }} />
-          </View>
-          <AppText variant="caption" tone="secondary">{stepNumbers[step]} / 5</AppText>
-        </View>
-
         {step === 'type' && (
           <View style={{ gap: theme.spacing.sm }}>
             <View style={rowStyle}>
               {stoolTypes.map((type) => (
                 <View key={type} style={cellStyle(shapeColumns)}>
-                  <Choice label={t(`types.${type}`)} badge={String(type)} layout="tile" density="compact" icon={<StoolShape type={type} />} selected={form.stoolType === type} onPress={() => patch({ stoolType: type })} disabled={saving} style={{ flex: 1 }} testID={`bowel-type-${type}`} />
+                  <Choice label={t(`types.${type}`)} badge={String(type)} layout="tile" density="compact" icon={<StoolShape type={type} />} selected={form.stoolType === type} onPress={() => patch({ stoolType: type })} disabled={saving} style={{ flex: 1, minHeight: 126 }} testID={`bowel-type-${type}`} />
                 </View>
               ))}
             </View>

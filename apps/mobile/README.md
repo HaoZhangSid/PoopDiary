@@ -13,7 +13,7 @@ npm run export:web        # dist/web
 npm run export:native     # Android/iOS JS bundles; not an installed native build
 ```
 
-Implemented: Home, Diary, Profile, component gallery, three languages, light/dark/system themes, SQLite, and complete bowel, symptom, and water CRUD editors. Food, exercise, sleep, insights, and Azure remain pending.
+Implemented: Home, Diary, Profile, component gallery, three languages, light/dark/system themes, SQLite, all six logging flows, Insights, Report, and shared add/edit/delete editors. Azure integration and native device verification remain pending.
 
 `src/app` contains routes; `features` owns screens; `domain` owns types/rules; `data` owns SQLite; `state` owns shared caches; `design-system` owns themes and controls. Translations use feature namespaces. Cross-feature imports use public indexes.
 
@@ -25,4 +25,4 @@ Keep one Expo Web tab open at a time: SDK 57's SQLite Web worker holds an exclus
 
 Native projects follow Expo CNG. `eas.json` defines development/preview profiles; cloud builds need the team's EAS account configuration. Native device behavior and Azure still require team verification. Upstream Expo toolchain dependency advisories remain in `npm audit`; resolve them before production release.
 
-Verified 2026-10-03: TypeScript, ESLint and 85 tests passed; Expo Doctor passed 21/21 checks. Browser smoke testing covered bowel create/edit/cancel/delete/undo, symptom and water editor models, SQLite persistence, warning stop, keyboard slider, three languages and light/dark layouts at 390 px. Web and Android/iOS JS exports passed. These checks do not replace device testing or the remaining course deliverables.
+Verified 2026-10-04: TypeScript, ESLint and 85 tests passed; Expo Doctor passed 21/21 checks. Browser smoke testing covered all six flows, create/edit/delete/undo, SQLite persistence, warning stop, sliders, three languages and light/dark layouts at mobile width. Web and Android/iOS JS exports passed. These checks do not replace device testing or the remaining course deliverables.

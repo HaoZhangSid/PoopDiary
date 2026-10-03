@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { BackHandler, Linking, Pressable, View, useWindowDimensions } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Activity, AlertTriangle, ArrowRight, Clock3, X } from 'lucide-react-native';
+import { Activity, AlertTriangle, ArrowRight, CircleDot, Clock3, Flame, HeartPulse, MoreHorizontal, Wind, X } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { AppText, Button, Card, Choice, IconButton, Screen, Sheet, Slider, useTheme } from '@/design-system';
 import type { DiaryRecord, Severity } from '@/domain/records';
@@ -11,10 +11,10 @@ import { useFeedbackStore } from '@/state/useFeedbackStore';
 import { createDraft, createForm, cycleSeverity, emergencyWarnings, onsetOptions, durationOptions, painLocations, symptomCodes, warningSigns, type SymptomCode, type SymptomForm, type WarningSign, type SymptomStep } from './model';
 import { persistDraft } from '@/state/persistDraft';
 
-interface Props { id?: string }
+interface Props { id?: string; quick?: boolean }
 type SheetName = 'time' | 'warning' | undefined;
 
-export function SymptomEditorScreen({ id }: Props) {
+export function SymptomEditorScreen({ id, quick = false }: Props) {
   const theme = useTheme();
   const router = useRouter();
   const { t } = useTranslation('symptom');
@@ -24,20 +24,21 @@ export function SymptomEditorScreen({ id }: Props) {
   if (status === 'idle' || status === 'loading') return <Screen title={t(id ? 'editTitle' : 'title')} onBack={back} backLabel={t('back')}><AppText>{t('loading')}</AppText></Screen>;
   if (status === 'error') return <Screen title={t('title')} onBack={back} backLabel={t('back')}><View style={{ gap: theme.spacing.md }}><AppText>{t('loadError')}</AppText><Button label={t('retry')} onPress={() => void initialize().catch(() => undefined)} /></View></Screen>;
   if (id && !record) return <Screen title={t('missing')} onBack={back} backLabel={t('back')}><Button label={t('back')} variant="secondary" onPress={back} /></Screen>;
-  return <SymptomEditorForm key={id ?? 'new'} record={record} />;
+  return <SymptomEditorForm key={id ?? 'new'} record={record} quick={quick} />;
 }
 
-function SymptomChip({ code, level, onPress, label, severity, disabled = false }: { code: SymptomCode; level?: Severity; onPress: () => void; label: string; severity: (value: Severity) => string; disabled?: boolean }) {
+function SymptomChip({ code, level, onPress, label, severity, disabled = false, quick = false }: { code: SymptomCode; level?: Severity; onPress: () => void; label: string; severity: (value: Severity) => string; disabled?: boolean; quick?: boolean }) {
   const theme = useTheme();
   const tone = level ? theme.colors.severity[level] : undefined;
-  return <Pressable testID={`symptom-${code}`} accessibilityRole="checkbox" accessibilityState={{ checked: Boolean(level), disabled }} accessibilityLabel={`${label}${level ? ` · ${severity(level)}` : ''}`} disabled={disabled} onPress={onPress} style={({ pressed }) => ({ minHeight: theme.controls.choiceTileHeight, flex: 1, padding: theme.spacing.md, borderWidth: theme.controls.borderWidth, borderRadius: theme.radius.md, borderColor: tone?.fg ?? theme.colors.border.control, backgroundColor: pressed ? (tone?.bg ?? theme.colors.surface.subtle) : tone?.bg ?? theme.colors.surface.card, justifyContent: 'space-between', gap: theme.spacing.sm, transform: [{ scale: pressed ? theme.motion.pressedScale : 1 }] })}>
-    <AppText variant="label" style={{ color: tone?.fg ?? theme.colors.text.primary }}>{label}</AppText>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm }}>
+  const Icon = code === 'bloating' ? CircleDot : code === 'pain' ? HeartPulse : code === 'nausea' ? Activity : code === 'heartburn' ? Flame : code === 'gas' ? Wind : code === 'frequency' ? CircleDot : MoreHorizontal;
+  return <Pressable testID={`symptom-${code}`} accessibilityRole="checkbox" accessibilityState={{ checked: Boolean(level), disabled }} accessibilityLabel={`${label}${level ? ` · ${severity(level)}` : ''}`} disabled={disabled} onPress={onPress} style={({ pressed }) => ({ minHeight: quick ? 86 : 66, flex: 1, padding: theme.spacing.sm, borderWidth: theme.controls.borderWidth, borderRadius: theme.radius.md, borderColor: tone?.fg ?? theme.colors.border.control, backgroundColor: pressed ? (tone?.bg ?? theme.colors.surface.subtle) : tone?.bg ?? theme.colors.surface.card, justifyContent: 'space-between', gap: theme.spacing.sm, transform: [{ scale: pressed ? theme.motion.pressedScale : 1 }] })}>
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm }}>{!quick && <View style={{ width: 38, height: 38, borderRadius: theme.radius.md, alignItems: 'center', justifyContent: 'center', backgroundColor: tone?.bg ?? theme.colors.surface.subtle }}><Icon size={theme.controls.icon} color={tone?.fg ?? theme.colors.text.secondary} /></View>}<AppText variant="label" style={{ color: tone?.fg ?? theme.colors.text.primary }}>{label}</AppText></View>
+      {(level || quick) && <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm }}>
       {level ? <AppText variant="caption" style={{ color: tone?.fg }}>{severity(level)}</AppText> : <AppText variant="caption" tone="secondary">+</AppText>}
-      <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: theme.spacing.xs, marginLeft: 'auto' }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+      {level && <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: theme.spacing.xs, marginLeft: 'auto' }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
         {(['mild', 'moderate', 'severe'] as const).map((mark) => <View key={mark} style={{ width: theme.spacing.xs, height: mark === 'mild' ? theme.spacing.xs : mark === 'moderate' ? theme.spacing.sm : theme.spacing.md, borderRadius: theme.radius.sm, backgroundColor: level === mark || (level === 'moderate' && mark === 'mild') || (level === 'severe' && mark !== 'severe') ? tone?.fg ?? theme.colors.text.primary : theme.colors.border.default }} />)}
-      </View>
-    </View>
+      </View>}
+    </View>}
   </Pressable>;
 }
 
@@ -48,10 +49,10 @@ function SymptomSafetyStop({ warning, onBack }: { warning: WarningSign; onBack: 
   const emergency = emergencyWarnings.includes(warning);
   useEffect(() => { const listener = BackHandler.addEventListener('hardwareBackPress', () => { onBack(); return true; }); return () => listener.remove(); }, [onBack]);
   const call = async () => { setCallFailed(false); try { await Linking.openURL('tel:112'); } catch { setCallFailed(true); } };
-  return <Screen title={t('warning.title')} onBack={onBack} backLabel={t('back')}><View style={{ gap: theme.spacing.lg }} accessibilityLiveRegion="assertive"><Card><View style={{ gap: theme.spacing.md }}><AppText variant="sectionTitle">{t(`warning.signs.${warning}`)}</AppText><AppText variant="label">{t(emergency ? 'warning.urgent' : 'warning.soon')}</AppText><AppText>{t(emergency ? 'warning.urgentCopy' : 'warning.soonCopy')}</AppText></View></Card>{emergency && <Button label={t('warning.call')} variant="danger" onPress={() => void call()} />}{callFailed && <AppText tone="danger">{t('warning.callError')}</AppText>}<AppText tone="secondary">{t('warning.note')}</AppText><Button label={t('warning.modify')} variant="secondary" onPress={onBack} /></View></Screen>;
+  return <Screen title={t('warning.title')} onBack={onBack} backLabel={t('back')} maxWidth={600}><View style={{ gap: theme.spacing.lg }} accessibilityLiveRegion="assertive"><Card><View style={{ gap: theme.spacing.md }}><AppText variant="sectionTitle">{t(`warning.signs.${warning}`)}</AppText><AppText variant="label">{t(emergency ? 'warning.urgent' : 'warning.soon')}</AppText><AppText>{t(emergency ? 'warning.urgentCopy' : 'warning.soonCopy')}</AppText></View></Card>{emergency && <Button label={t('warning.call')} variant="danger" onPress={() => void call()} />}{callFailed && <AppText tone="danger">{t('warning.callError')}</AppText>}<AppText tone="secondary">{t('warning.note')}</AppText><Button label={t('warning.modify')} variant="secondary" onPress={onBack} /></View></Screen>;
 }
 
-function SymptomEditorForm({ record }: { record?: Extract<DiaryRecord, { kind: 'symptom' }> }) {
+function SymptomEditorForm({ record, quick }: { record?: Extract<DiaryRecord, { kind: 'symptom' }>; quick?: boolean }) {
   const theme = useTheme();
   const router = useRouter();
   const { t, i18n } = useTranslation('symptom');
@@ -85,13 +86,13 @@ function SymptomEditorForm({ record }: { record?: Extract<DiaryRecord, { kind: '
   const levelLabel = (value: Severity) => t(`severities.${value}`);
   const timeLabel = `${new Intl.DateTimeFormat(i18n.resolvedLanguage, { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(`${form.date}T12:00:00`))} · ${form.time}`;
   if (warning) return <SymptomSafetyStop warning={warning} onBack={() => setWarning(undefined)} />;
-  const title = step === 'select' ? t('title') : step === 'details' ? t('detailsLabel') : t('saveLabel');
-  return <Screen key={step} title={title} subtitle={`${t('selectLabel')} · ${record ? t('editTitle') : t('title')}`} onBack={back} backLabel={t('back')} right={<IconButton icon={X} label={t('close')} onPress={back} disabled={saving} />} footer={<View style={{ gap: theme.spacing.xs }}>{saveFailed && <AppText tone="danger" accessibilityRole="alert">{t('saveError')}</AppText>}<Button label={record ? t('saveChanges') : t('saveEntry')} icon={ArrowRight} onPress={() => void save()} loading={saving} disabled={saving || !active.length} testID="symptom-save" /></View>}>
+  const title = step === 'select' ? (quick ? t('quickTitle') : t('title')) : step === 'details' ? t('detailsLabel') : t('saveLabel');
+  const flowStep = step === 'select' ? 1 : step === 'details' ? 2 : 3;
+  return <Screen key={step} title={title} subtitle={undefined} onBack={back} backLabel={t('back')} maxWidth={600} flowBrand flowEyebrow={quick ? t('quickFlow') : t(record ? 'editFlow' : 'newFlow')} flowStep={quick ? undefined : flowStep} flowTotal={quick ? undefined : 3} right={<IconButton icon={X} label={t('close')} onPress={back} disabled={saving} />} footer={<View style={{ gap: theme.spacing.xs }}>{saveFailed && <AppText tone="danger" accessibilityRole="alert">{t('saveError')}</AppText>}<Button label={record ? t('saveChanges') : t('saveEntry')} icon={ArrowRight} onPress={() => void save()} loading={saving} disabled={saving || !active.length} testID="symptom-save" /></View>}>
     <View style={{ gap: theme.spacing.lg }} onLayout={(event) => setGridWidth(event.nativeEvent.layout.width)}>
-      <View style={{ gap: theme.spacing.sm }}><View style={{ height: theme.spacing.xs, borderRadius: theme.radius.pill, backgroundColor: theme.colors.border.default, overflow: 'hidden' }}><View style={{ width: `${step === 'select' ? 33 : step === 'details' ? 66 : 100}%`, height: '100%', backgroundColor: theme.colors.text.primary }} /></View><AppText variant="caption" tone="secondary">{step === 'select' ? '1' : step === 'details' ? '2' : '3'} / 3</AppText></View>
       {step === 'select' && <>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.spacing.sm }}>{symptomCodes.map((code) => <View key={code} style={cell}><SymptomChip code={code} label={t(`symptoms.${code}`)} level={form.levels[code]} severity={levelLabel} onPress={() => patch(cycleSeverity(form, code))} disabled={saving} /></View>)}</View>
-        <Button label={t('warning.button')} variant="secondary" icon={AlertTriangle} onPress={() => setSheet('warning')} disabled={saving} testID="symptom-safety" />
+        <Pressable accessibilityRole="button" onPress={() => setSheet('warning')} style={{ minHeight: 54, padding: theme.spacing.sm, borderWidth: theme.controls.borderWidth, borderColor: theme.colors.border.control, borderRadius: theme.radius.md, backgroundColor: theme.colors.surface.card, flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm }}><View style={{ width: 34, height: 34, borderRadius: theme.radius.sm, backgroundColor: theme.colors.feedback.warning.bg, alignItems: 'center', justifyContent: 'center' }}><AlertTriangle size={theme.controls.smallIcon} color={theme.colors.feedback.warning.fg} /></View><AppText variant="label" style={{ flex: 1 }}>{quick ? t('quickWarning') : t('warning.button')}</AppText><AppText tone="secondary">⌄</AppText></Pressable>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.spacing.sm }}>{!quick && <View style={cell}><Pressable testID="symptom-none" accessibilityRole="checkbox" onPress={() => patch({ levels: {} })} style={{ minHeight: 66, flex: 1, padding: theme.spacing.sm, borderWidth: theme.controls.borderWidth, borderColor: theme.colors.border.control, borderRadius: theme.radius.md, backgroundColor: theme.colors.surface.card, flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm }}><View style={{ width: 38, height: 38, borderRadius: theme.radius.md, alignItems: 'center', justifyContent: 'center', backgroundColor: theme.colors.surface.subtle }}><Activity size={theme.controls.icon} color={theme.colors.text.secondary} /></View><AppText variant="label">{t('symptoms.none', { defaultValue: 'Nothing' })}</AppText></Pressable></View>}{symptomCodes.filter((code) => !quick || code !== 'other').map((code) => <View key={code} style={cell}><SymptomChip code={code} label={t(`symptoms.${code}`)} level={form.levels[code]} severity={levelLabel} onPress={() => patch(cycleSeverity(form, code))} disabled={saving} quick={quick} /></View>)}</View>
         {!record && <Button label={t('noSymptoms')} variant="text" onPress={() => router.replace('/')} disabled={saving} />}
         <Button label={t('addDetails')} variant="text" icon={ArrowRight} onPress={() => setStep('details')} disabled={saving || !active.length} testID="symptom-details" />
       </>}

@@ -1,5 +1,5 @@
 export default {
-  title: 'How do you feel?', editTitle: 'Edit symptoms', selectLabel: 'Symptoms', detailsLabel: 'Details', saveLabel: 'Review',
+  title: 'How do you feel?', quickTitle: 'How do you feel now?', quickWarning: 'Obvious discomfort', editTitle: 'Edit symptoms', quickFlow: '+ body sensation', editFlow: 'Symptoms · Edit', newFlow: 'Symptoms · Quick log', selectLabel: 'Symptoms', detailsLabel: 'Details', saveLabel: 'Review',
   saveEntry: 'Save symptoms', saveChanges: 'Save changes', saved: 'Symptoms saved', updated: 'Changes saved',
   loading: 'Loading record…', missing: 'Record not found', loadError: 'Records could not be loaded.', saveError: 'Could not save. Try again.',
   retry: 'Retry', back: 'Back', close: 'Close', continue: 'Continue', when: 'When', now: 'Now', fiveAgo: '5 min ago', thirtyAgo: '30 min ago', done: 'Done',

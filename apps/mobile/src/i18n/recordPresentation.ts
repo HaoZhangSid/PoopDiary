@@ -28,7 +28,7 @@ export function recordSummary(record: DiaryRecord) {
       ...sensations.map((code) => i18n.t(`sensations.${code}`, { ns: 'bowel' })),
     ].filter(Boolean).join(' · ');
   }
-  if (record.kind === 'food') return record.details.items.map((item) => item.name).join(' + ');
+  if (record.kind === 'food') return record.details.items.map((item) => i18n.t(`foods.${item.name}`, { ns: 'food', defaultValue: item.name })).join(' + ');
   if (record.kind === 'water') {
     const beverage = record.details.beverage === 'other' && record.details.customName
       ? record.details.customName
@@ -36,5 +36,13 @@ export function recordSummary(record: DiaryRecord) {
     return `${record.details.volumeMl} ml · ${beverage}`;
   }
   if (record.kind === 'symptom') return record.details.symptoms.map((entry) => i18n.t(`severities.${entry.severity}`, { ns: 'symptom' })).join(' · ');
-  return record.details.note ?? '';
+  if (record.kind === 'exercise') {
+    const intensityKey = record.details.intensity === 'light' ? 'easy' : record.details.intensity === 'vigorous' ? 'veryHard' : 'moderate';
+    return `${record.details.durationMinutes} ${i18n.t('minutes', { ns: 'exercise' })} · ${i18n.t(intensityKey, { ns: 'exercise' })}`;
+  }
+  if (record.kind === 'sleep') {
+    const minutes = Math.max(0, Math.round((Date.parse(record.details.endedAt) - Date.parse(record.details.startedAt)) / 60_000));
+    return `${Math.floor(minutes / 60)}${i18n.t('hourUnit', { ns: 'sleep' })}${minutes % 60 ? ` ${minutes % 60}${i18n.t('minuteUnit', { ns: 'sleep' })}` : ''}`.trim();
+  }
+  return '';
 }

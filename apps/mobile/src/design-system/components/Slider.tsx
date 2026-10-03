@@ -8,7 +8,7 @@ import type { SliderProps } from './Slider.types';
 
 export type { SliderProps } from './Slider.types';
 
-export function Slider({ value, onValueChange, minimumValue, maximumValue, step = 1, label, tone = 'primary', testID }: SliderProps) {
+export function Slider({ value, onValueChange, minimumValue, maximumValue, step = 1, label, showValue = true, tone = 'primary', testID }: SliderProps) {
   const theme = useTheme();
   const [focused, setFocused] = useState(false);
   const boundedValue = Math.max(minimumValue, Math.min(maximumValue, value));
@@ -17,7 +17,7 @@ export function Slider({ value, onValueChange, minimumValue, maximumValue, step 
     <View style={{ gap: theme.spacing.sm }}>
       <View style={{ flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', gap: theme.spacing.sm }}>
         {Boolean(label) && <AppText variant="label" style={{ flex: 1 }}>{label}</AppText>}
-        <AppText variant="label">{boundedValue}</AppText>
+        {showValue && <AppText variant="label">{boundedValue}</AppText>}
       </View>
       <NativeSlider
         testID={testID}

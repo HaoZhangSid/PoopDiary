@@ -1,6 +1,6 @@
 export default {
-  title: 'Juomat', addTitle: 'Lisää juoma', editTitle: 'Muokkaa juomaa',
-  chooseDrink: 'Juoma', amount: 'Määrä', todayTotal: 'Tänään', goal: '/ 2000 ml',
+  title: 'Juomat', addTitle: 'Lisää juoma', editTitle: 'Muokkaa juomaa', quickLabel: 'Yhden sivun kirjaus',
+  chooseDrink: 'Juoma', amount: 'Määrä', capacity: 'Tilavuus', todayTotal: 'Tänään', recordedToday: 'Kirjattu tänään', goal: '/ 2000 ml',
   save: 'Lisää {{amount}} ml {{drink}}', saveChanges: 'Tallenna muutokset', saved: 'Juoma tallennettu', updated: 'Muutokset tallennettu',
   loading: 'Ladataan juomaa…', missing: 'Juomaa ei löytynyt', loadError: 'Juomia ei voitu ladata.', saveError: 'Tallennus epäonnistui. Yritä uudelleen.',
   custom: 'Oma juoma', customPlaceholder: 'Juoman nimi', addCustom: 'Lisää', clearCustom: 'Peruuta',

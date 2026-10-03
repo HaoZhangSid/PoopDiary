@@ -27,7 +27,7 @@ export function SafetyStopScreen({ warning, onBack }: Props) {
   };
 
   return (
-    <Screen title={t('safety.title')} onBack={onBack} backLabel={t('back')}>
+    <Screen title={t('safety.title')} onBack={onBack} backLabel={t('back')} maxWidth={600}>
       <View style={{ gap: theme.spacing.lg }} accessibilityLiveRegion="assertive">
         <Card>
           <View style={{ gap: theme.spacing.md }}>

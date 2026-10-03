@@ -15,8 +15,8 @@ export default {
   customDate: 'Change date', year: 'Year', month: 'Month', day: 'Day',
   hour: 'Hour', minute: 'Minute', done: 'Done', fiveAgo: '5 min ago', thirtyAgo: '30 min ago',
   types: {
-    '1': 'Small hard lumps', '2': 'Lumpy sausage', '3': 'Sausage with cracks',
-    '4': 'Smooth and soft', '5': 'Soft pieces', '6': 'Mushy', '7': 'Watery',
+    '1': 'small hard ball', '2': 'sausage-like but lumpy', '3': 'Sausage, cracked',
+    '4': 'Smooth and soft', '5': 'soft nuggets', '6': 'Pasty', '7': 'watery',
   },
   descriptions: {
     '1': 'Separate hard lumps.', '2': 'Sausage-shaped, with lumps.',

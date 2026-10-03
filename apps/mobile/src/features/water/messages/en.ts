@@ -1,6 +1,6 @@
 export default {
-  title: 'Drinks', addTitle: 'Add a drink', editTitle: 'Edit drink',
-  chooseDrink: 'Drink', amount: 'Amount', todayTotal: 'Today', goal: '/ 2000 ml',
+  title: 'Drinks', addTitle: 'Add a drink', editTitle: 'Edit drink', quickLabel: 'Single page record',
+  chooseDrink: 'Drink', amount: 'Amount', capacity: 'Capacity', todayTotal: 'Today', recordedToday: 'Recorded today', goal: '/ 2000 ml',
   save: 'Add {{amount}} ml {{drink}}', saveChanges: 'Save changes', saved: 'Drink saved', updated: 'Changes saved',
   loading: 'Loading drink…', missing: 'Drink not found', loadError: 'Drinks could not be loaded.', saveError: 'Could not save. Try again.',
   custom: 'Custom drink', customPlaceholder: 'Drink name', addCustom: 'Add', clearCustom: 'Cancel',

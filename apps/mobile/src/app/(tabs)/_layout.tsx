@@ -79,9 +79,12 @@ function LogSheet({ visible, onClose }: { visible: boolean; onClose: () => void 
   const router = useRouter();
   const { t } = useTranslation('common');
   const options = [
+    { label: t('food', { ns: 'common' }), path: '/food' as const },
     { label: t('bowel'), path: '/bowel' as const },
-    { label: t('water'), path: '/water/index' as const },
-    { label: t('symptom'), path: '/symptom/index' as const },
+    { label: t('water'), path: '/water' as const },
+    { label: t('symptom'), path: '/symptom' as const },
+    { label: t('exercise', { ns: 'common' }), path: '/exercise' as const },
+    { label: t('sleep', { ns: 'common' }), path: '/sleep' as const },
   ];
   return <Sheet visible={visible} title={t('log')} onClose={onClose}>
     {options.map((option) => <Pressable key={option.path} accessibilityRole="button" accessibilityLabel={option.label} onPress={() => { onClose(); router.push(option.path); }} style={({ pressed }) => [{ minHeight: theme.controls.minimumTouchTarget, justifyContent: 'center', paddingHorizontal: theme.spacing.md, borderWidth: theme.controls.borderWidth, borderColor: theme.colors.border.default, backgroundColor: pressed ? theme.colors.surface.subtle : theme.colors.surface.canvas, borderRadius: theme.radius.md }]}>

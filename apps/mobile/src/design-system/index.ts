@@ -3,6 +3,7 @@ export { darkTheme, lightTheme } from './tokens/theme';
 export type { ActionColors, Appearance, ColorPair, TextVariant, Theme } from './tokens/theme';
 export { AppText } from './components/AppText';
 export type { AppTextProps } from './components/AppText';
+export { AppTopbar } from './components/AppTopbar';
 export { Button } from './components/Button';
 export type { ButtonProps } from './components/Button';
 export { Card } from './components/Card';

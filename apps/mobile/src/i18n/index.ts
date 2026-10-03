@@ -12,11 +12,20 @@ import zhWater from '@/features/water/messages/zh';
 import enSymptom from '@/features/symptoms/messages/en';
 import fiSymptom from '@/features/symptoms/messages/fi';
 import zhSymptom from '@/features/symptoms/messages/zh';
+import enExercise from '@/features/exercise/messages/en';
+import fiExercise from '@/features/exercise/messages/fi';
+import zhExercise from '@/features/exercise/messages/zh';
+import enSleep from '@/features/sleep/messages/en';
+import fiSleep from '@/features/sleep/messages/fi';
+import zhSleep from '@/features/sleep/messages/zh';
+import enFood from '@/features/food/messages/en';
+import fiFood from '@/features/food/messages/fi';
+import zhFood from '@/features/food/messages/zh';
 
 export const resources = {
-  en: { ...en, bowel: enBowel, water: enWater, symptom: enSymptom },
-  fi: { ...fi, bowel: fiBowel, water: fiWater, symptom: fiSymptom },
-  zh: { ...zh, bowel: zhBowel, water: zhWater, symptom: zhSymptom },
+  en: { ...en, bowel: enBowel, water: enWater, symptom: enSymptom, exercise: enExercise, sleep: enSleep, food: enFood },
+  fi: { ...fi, bowel: fiBowel, water: fiWater, symptom: fiSymptom, exercise: fiExercise, sleep: fiSleep, food: fiFood },
+  zh: { ...zh, bowel: zhBowel, water: zhWater, symptom: zhSymptom, exercise: zhExercise, sleep: zhSleep, food: zhFood },
 };
 
 const i18n = createInstance();

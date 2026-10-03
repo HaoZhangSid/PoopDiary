@@ -1,5 +1,5 @@
 export default {
-  title: '现在感觉怎么样？', editTitle: '编辑身体感觉', selectLabel: '身体感觉', detailsLabel: '详细记录', saveLabel: '准备保存',
+  title: '现在感觉怎么样？', quickTitle: '现在感觉怎么样？', quickWarning: '明显不适', editTitle: '编辑身体感觉', quickFlow: '+ 身体感觉', editFlow: '身体感觉 · 编辑', newFlow: '身体感觉 · 快速记录', selectLabel: '身体感觉', detailsLabel: '详细记录', saveLabel: '准备保存',
   saveEntry: '保存身体感觉', saveChanges: '保存修改', saved: '身体感觉已保存', updated: '修改已保存',
   loading: '正在读取…', missing: '记录不存在', loadError: '无法读取记录', saveError: '保存失败，请重试', retry: '重试', back: '返回', close: '关闭', continue: '继续', when: '时间', now: '现在', fiveAgo: '5 分钟前', thirtyAgo: '30 分钟前', done: '完成',
   addDetails: '添加持续时间等细节', noSymptoms: '我感觉很好', severity: '程度', painLevel: '疼痛程度', painLocation: '疼痛位置', vomiting: '是否呕吐？', yes: '是', no: '否', onset: '什么时候开始？', duration: '持续多久？', note: '备注', notePlaceholder: '选填',

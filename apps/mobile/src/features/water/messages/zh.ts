@@ -1,6 +1,6 @@
 export default {
-  title: '饮品', addTitle: '添加饮品', editTitle: '编辑饮品',
-  chooseDrink: '饮品', amount: '容量', todayTotal: '今天已记录', goal: '/ 2000 ml',
+  title: '饮品', addTitle: '添加饮品', editTitle: '编辑饮品', quickLabel: '快速记录',
+  chooseDrink: '饮品', amount: '容量', capacity: '容量', todayTotal: '今天已记录', recordedToday: '今天已记录', goal: '/ 2000 ml',
   save: '添加 {{amount}} ml {{drink}}', saveChanges: '保存修改', saved: '已保存', updated: '已修改',
   loading: '加载饮品…', missing: '记录不存在', loadError: '饮品记录加载失败。', saveError: '保存失败，请重试。',
   custom: '自定义饮品', customPlaceholder: '输入饮品名称', addCustom: '添加', clearCustom: '取消',

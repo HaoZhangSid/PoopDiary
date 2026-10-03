@@ -11,7 +11,7 @@ import { useFeedbackStore } from '@/state/useFeedbackStore';
 import { persistDraft } from '@/state/persistDraft';
 import { amountPresets, createDraft, createForm, type BeverageCode, type WaterForm } from './model';
 
-interface Props { id?: string }
+interface Props { id?: string; quick?: boolean }
 type WaterRecord = Extract<DiaryRecord, { kind: 'water' }>;
 const commonBeverages: BeverageCode[] = ['water', 'coffee', 'tea', 'soda', 'juice', 'milk'];
 const extraBeverages: BeverageCode[] = ['alcohol', 'other'];
@@ -51,7 +51,7 @@ function DrinkChoice({ code, selected, label, onPress, disabled }: { code: Bever
 }
 
 /** Single-screen drink logger ported from the Web prototype. New and edit share this editor. */
-export function WaterEditorScreen({ id }: Props) {
+export function WaterEditorScreen({ id, quick = false }: Props) {
   const theme = useTheme();
   const router = useRouter();
   const { t } = useTranslation(['water', 'common']);
@@ -62,16 +62,16 @@ export function WaterEditorScreen({ id }: Props) {
   if (status === 'idle' || status === 'loading') return <Screen title={t(id ? 'editTitle' : 'addTitle')} onBack={back} backLabel={t('back')}><View style={{ gap: theme.spacing.md }}><ActivityIndicator color={theme.colors.text.primary} /><AppText>{t('loading')}</AppText></View></Screen>;
   if (status === 'error') return <Screen title={t('title')} onBack={back} backLabel={t('back')}><View style={{ gap: theme.spacing.md }}><AppText>{t('loadError')}</AppText><Button label={t('retry')} onPress={() => void initialize().catch(() => undefined)} /></View></Screen>;
   if (id && !record) return <Screen title={t('missing')} onBack={back} backLabel={t('back')}><Button label={t('back')} variant="secondary" onPress={back} /></Screen>;
-  return <WaterEditorForm key={id ?? 'new'} record={record} />;
+  return <WaterEditorForm key={`${id ?? 'new'}-${quick ? 'quick' : 'full'}`} record={record} quick={quick} />;
 }
 
-function WaterEditorForm({ record }: { record?: WaterRecord }) {
+function WaterEditorForm({ record, quick = false }: { record?: WaterRecord; quick?: boolean }) {
   const theme = useTheme();
   const router = useRouter();
   const { t } = useTranslation(['water', 'common']);
   const { records, createRecord, updateRecord } = useAppStore();
   const { width } = useWindowDimensions();
-  const [form, setForm] = useState<WaterForm>(() => createForm(record));
+  const [form, setForm] = useState<WaterForm>(() => { const initial = createForm(record); return record ? initial : { ...initial, volumeMl: quick ? 200 : initial.volumeMl }; });
   const [showMore, setShowMore] = useState(record?.details.beverage === 'alcohol' || record?.details.beverage === 'other');
   const [showCustom, setShowCustom] = useState(record?.details.beverage === 'other');
   const [saving, setSaving] = useState(false);
@@ -102,16 +102,21 @@ function WaterEditorForm({ record }: { record?: WaterRecord }) {
   const isNarrow = width < theme.controls.minimumTouchTarget * 8;
   return <Screen
     title={t(record ? 'editTitle' : 'addTitle')}
-    subtitle={t('defaultWater')}
+    subtitle={quick ? undefined : t('defaultWater')}
     onBack={exit}
     backLabel={t('back')}
+    maxWidth={600}
+    flowBrand
+    flowEyebrow={quick ? `+ ${t('title')} · ${t('quickLabel')}` : undefined}
+    flowStep={quick ? undefined : 2}
+    flowTotal={quick ? undefined : 3}
     right={<IconButton icon={X} label={t('close')} onPress={exit} disabled={saving} />}
     footer={<View style={{ gap: theme.spacing.xs }}>{saveFailed && <AppText tone="danger" accessibilityRole="alert" accessibilityLiveRegion="assertive">{t('saveError')}</AppText>}<Button label={record ? t('saveChanges') : t('save', { amount: form.volumeMl, drink: selectedLabel })} onPress={() => { void save(); }} loading={saving} disabled={saving || form.volumeMl < 1} testID="water-save" /></View>}
   >
     <View style={{ gap: theme.spacing.lg }}>
-      <Card style={{ gap: theme.spacing.sm }}>
+      <Card style={quick ? { gap: theme.spacing.sm, padding: 0, paddingBottom: theme.spacing.lg, backgroundColor: 'transparent', borderWidth: 0, borderBottomWidth: theme.controls.borderWidth, borderRadius: 0 } : undefined}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline', gap: theme.spacing.sm }}>
-          <AppText variant="label">{t('todayTotal')}</AppText><AppText variant="caption" tone="secondary">{todayTotal} {t('goal')}</AppText>
+          <AppText variant={quick ? 'caption' : 'label'} tone={quick ? 'secondary' : 'primary'}>{quick ? t('recordedToday') : t('todayTotal')}</AppText><AppText variant="caption" tone="secondary">{todayTotal} {t('goal')}</AppText>
         </View>
         <View accessibilityRole="progressbar" accessibilityValue={{ min: 0, max: 2000, now: todayTotal }} style={{ height: theme.spacing.sm, borderRadius: theme.radius.pill, overflow: 'hidden', backgroundColor: theme.colors.entry.water.bg }}><View style={{ height: '100%', width: `${progress}%`, backgroundColor: theme.colors.entry.water.fg }} /></View>
       </Card>
@@ -119,7 +124,7 @@ function WaterEditorForm({ record }: { record?: WaterRecord }) {
       <View style={{ gap: theme.spacing.sm }}>
         <View style={{ flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', gap: theme.spacing.sm }}><AppText variant="sectionTitle">{t('chooseDrink')}</AppText><AppText variant="caption" tone="secondary">{selectedLabel}</AppText></View>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.spacing.sm }}>
-          {commonBeverages.map((code) => <DrinkChoice key={code} code={code} selected={form.beverage === code} label={t(`beverages.${code}`)} onPress={() => selectBeverage(code)} disabled={saving} />)}
+          {commonBeverages.filter((code) => !quick || ['water', 'coffee', 'tea', 'soda'].includes(code)).map((code) => <DrinkChoice key={code} code={code} selected={form.beverage === code} label={t(`beverages.${code}`)} onPress={() => selectBeverage(code)} disabled={saving} />)}
         </View>
         {!showMore && <Button label={t('moreDrinks')} variant="text" onPress={() => setShowMore(true)} disabled={saving} />}
         {showMore && <View style={{ gap: theme.spacing.sm }}><View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.spacing.sm }}>{extraBeverages.map((code) => <DrinkChoice key={code} code={code} selected={form.beverage === code} label={t(`beverages.${code}`)} onPress={() => selectBeverage(code)} disabled={saving} />)}</View><Button label={t('fewerDrinks')} variant="text" onPress={() => setShowMore(false)} disabled={saving} /></View>}
@@ -127,8 +132,8 @@ function WaterEditorForm({ record }: { record?: WaterRecord }) {
       </View>
 
       <View style={{ gap: theme.spacing.sm }}>
-        <View style={{ flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', gap: theme.spacing.sm }}><AppText variant="sectionTitle">{t('amount')}</AppText><AppText variant="sectionTitle" style={{ color: theme.colors.entry.water.fg }}>{form.volumeMl} <AppText variant="caption" style={{ color: theme.colors.entry.water.fg }}>ml</AppText></AppText></View>
-        <Slider label={t('volume')} value={form.volumeMl} onValueChange={(value) => patch({ volumeMl: Math.round(value / 50) * 50 })} minimumValue={100} maximumValue={1000} step={50} tone="water" testID="water-volume-slider" />
+        <View style={{ flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', gap: theme.spacing.sm }}><AppText variant="sectionTitle">{quick ? t('capacity') : t('amount')}</AppText><AppText variant="sectionTitle" style={{ color: theme.colors.entry.water.fg }}>{form.volumeMl} <AppText variant="caption" style={{ color: theme.colors.entry.water.fg }}>ml</AppText></AppText></View>
+        <Slider label={quick ? '' : t('volume')} showValue={!quick} value={form.volumeMl} onValueChange={(value) => patch({ volumeMl: Math.round(value / 50) * 50 })} minimumValue={100} maximumValue={1000} step={50} tone="water" testID="water-volume-slider" />
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.spacing.sm }}>{amountPresets.map((amount) => <View key={amount} style={{ flex: 1, minWidth: theme.controls.minimumTouchTarget * 2 }}><Button label={t(`presets.${amount}`)} variant={form.volumeMl === amount ? 'primary' : 'secondary'} onPress={() => patch({ volumeMl: amount })} disabled={saving} testID={`water-amount-${amount}`} /></View>)}</View>
       </View>
     </View>

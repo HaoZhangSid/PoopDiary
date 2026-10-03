@@ -54,7 +54,17 @@ export function Sheet({ visible, title, onClose, children, closeLabel = 'Close' 
         <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: theme.colors.overlay, opacity: backdropOpacity }]}>
           <Pressable onPress={close} accessible={false} importantForAccessibility="no" style={StyleSheet.absoluteFill} />
         </Animated.View>
-        <Animated.View style={{ transform: [{ translateY: sheetProgress.interpolate({ inputRange: [0, 1], outputRange: [0, windowHeight] }) }] }}>
+        <Animated.View style={{
+          width: '100%',
+          maxWidth: theme.controls.contentWidth,
+          maxHeight: '100%',
+          alignSelf: 'center',
+          backgroundColor: theme.colors.surface.card,
+          borderTopLeftRadius: theme.radius.lg,
+          borderTopRightRadius: theme.radius.lg,
+          overflow: 'hidden',
+          transform: [{ translateY: sheetProgress.interpolate({ inputRange: [0, 1], outputRange: [0, windowHeight] }) }],
+        }}>
           <SafeAreaView
             edges={['bottom', 'left', 'right']}
             accessibilityViewIsModal
@@ -62,9 +72,11 @@ export function Sheet({ visible, title, onClose, children, closeLabel = 'Close' 
             style={{
               width: '100%',
               maxWidth: theme.controls.contentWidth,
-              maxHeight: '90%',
+              // Let the panel reach the bottom edge on short mobile viewports.
+              // The ScrollView still bounds long content to the available height.
+              maxHeight: '100%',
               alignSelf: 'center',
-              backgroundColor: theme.colors.surface.card,
+              backgroundColor: 'transparent',
               borderTopLeftRadius: theme.radius.lg,
               borderTopRightRadius: theme.radius.lg,
               padding: theme.spacing.md,
