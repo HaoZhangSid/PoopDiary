@@ -1,6 +1,6 @@
 export default {
   common: {
-    appName: 'Poop Diary', today: 'Today', diary: 'Diary', profile: 'Profile',
+    appName: 'Poop Diary', today: 'Today', diary: 'Diary', insights: 'Insights', profile: 'Profile', log: 'Log',
     bowel: 'Bowel', food: 'Food', symptom: 'Symptoms', water: 'Drinks', exercise: 'Exercise', sleep: 'Sleep',
     back: 'Back', close: 'Close', cancel: 'Cancel', save: 'Save', edit: 'Edit', delete: 'Delete', undo: 'Undo',
     loading: 'Loading…', retry: 'Retry', error: 'Something went wrong. Try again.', saved: 'Saved', updated: 'Updated', deleted: 'Deleted', restored: 'Restored',
@@ -11,7 +11,8 @@ export default {
     title: 'Today', quickLog: 'Log a bowel movement', recent: 'Your entries',
     entryCount: '{{count}} entry', entryCount_other: '{{count}} entries', allEntries: 'View diary',
     empty: 'No entries today', bowelCount: '{{count}} bowel movement', bowelCount_other: '{{count}} bowel movements',
-    quickTitle: 'Quick log', overview: 'Today at a glance', streak: 'Day streak', days: 'days', addFirst: 'Add an entry',
+    quickTitle: 'Quick log', overview: 'Today at a glance', streak: 'continuous recording', days: 'day', addFirst: 'Add an entry',
+    mealsLabel: 'Meals', bowelLabel: 'Bowel', symptomLabel: 'Symptoms', exerciseLabel: 'Exercise', sleepLabel: 'Sleep', times: 'times', entry: 'entry', lastNight: 'last night', waterGoal: '/ 2000 ml',
     greetings: { night: 'Good night', morning: 'Good morning', noon: 'Good afternoon', afternoon: 'Good afternoon', evening: 'Good evening' },
   },
   diary: {

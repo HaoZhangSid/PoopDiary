@@ -27,10 +27,10 @@ export function SymptomEditorScreen({ id }: Props) {
   return <SymptomEditorForm key={id ?? 'new'} record={record} />;
 }
 
-function SymptomChip({ code, level, onPress, label, severity }: { code: SymptomCode; level?: Severity; onPress: () => void; label: string; severity: (value: Severity) => string }) {
+function SymptomChip({ code, level, onPress, label, severity, disabled = false }: { code: SymptomCode; level?: Severity; onPress: () => void; label: string; severity: (value: Severity) => string; disabled?: boolean }) {
   const theme = useTheme();
   const tone = level ? theme.colors.severity[level] : undefined;
-  return <Pressable testID={`symptom-${code}`} accessibilityRole="checkbox" accessibilityState={{ checked: Boolean(level) }} accessibilityLabel={`${label}${level ? ` · ${severity(level)}` : ''}`} onPress={onPress} style={({ pressed }) => ({ minHeight: theme.controls.choiceTileHeight, flex: 1, padding: theme.spacing.md, borderWidth: theme.controls.borderWidth, borderRadius: theme.radius.md, borderColor: tone?.fg ?? theme.colors.border.control, backgroundColor: pressed ? (tone?.bg ?? theme.colors.surface.subtle) : tone?.bg ?? theme.colors.surface.card, justifyContent: 'space-between', gap: theme.spacing.sm, transform: [{ scale: pressed ? theme.motion.pressedScale : 1 }] })}>
+  return <Pressable testID={`symptom-${code}`} accessibilityRole="checkbox" accessibilityState={{ checked: Boolean(level), disabled }} accessibilityLabel={`${label}${level ? ` · ${severity(level)}` : ''}`} disabled={disabled} onPress={onPress} style={({ pressed }) => ({ minHeight: theme.controls.choiceTileHeight, flex: 1, padding: theme.spacing.md, borderWidth: theme.controls.borderWidth, borderRadius: theme.radius.md, borderColor: tone?.fg ?? theme.colors.border.control, backgroundColor: pressed ? (tone?.bg ?? theme.colors.surface.subtle) : tone?.bg ?? theme.colors.surface.card, justifyContent: 'space-between', gap: theme.spacing.sm, transform: [{ scale: pressed ? theme.motion.pressedScale : 1 }] })}>
     <AppText variant="label" style={{ color: tone?.fg ?? theme.colors.text.primary }}>{label}</AppText>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm }}>
       {level ? <AppText variant="caption" style={{ color: tone?.fg }}>{severity(level)}</AppText> : <AppText variant="caption" tone="secondary">+</AppText>}
@@ -90,7 +90,7 @@ function SymptomEditorForm({ record }: { record?: Extract<DiaryRecord, { kind: '
     <View style={{ gap: theme.spacing.lg }} onLayout={(event) => setGridWidth(event.nativeEvent.layout.width)}>
       <View style={{ gap: theme.spacing.sm }}><View style={{ height: theme.spacing.xs, borderRadius: theme.radius.pill, backgroundColor: theme.colors.border.default, overflow: 'hidden' }}><View style={{ width: `${step === 'select' ? 33 : step === 'details' ? 66 : 100}%`, height: '100%', backgroundColor: theme.colors.text.primary }} /></View><AppText variant="caption" tone="secondary">{step === 'select' ? '1' : step === 'details' ? '2' : '3'} / 3</AppText></View>
       {step === 'select' && <>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.spacing.sm }}>{symptomCodes.map((code) => <View key={code} style={cell}><SymptomChip code={code} label={t(`symptoms.${code}`)} level={form.levels[code]} severity={levelLabel} onPress={() => patch(cycleSeverity(form, code))} /></View>)}</View>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.spacing.sm }}>{symptomCodes.map((code) => <View key={code} style={cell}><SymptomChip code={code} label={t(`symptoms.${code}`)} level={form.levels[code]} severity={levelLabel} onPress={() => patch(cycleSeverity(form, code))} disabled={saving} /></View>)}</View>
         <Button label={t('warning.button')} variant="secondary" icon={AlertTriangle} onPress={() => setSheet('warning')} disabled={saving} testID="symptom-safety" />
         {!record && <Button label={t('noSymptoms')} variant="text" onPress={() => router.replace('/')} disabled={saving} />}
         <Button label={t('addDetails')} variant="text" icon={ArrowRight} onPress={() => setStep('details')} disabled={saving || !active.length} testID="symptom-details" />

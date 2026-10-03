@@ -1,7 +1,7 @@
 import type { TextStyle } from 'react-native';
 
 export type Appearance = 'light' | 'dark' | 'system';
-export type TextVariant = 'caption' | 'label' | 'body' | 'sectionTitle' | 'pageTitle';
+export type TextVariant = 'caption' | 'label' | 'body' | 'sectionTitle' | 'pageTitle' | 'heroTitle' | 'homeSectionTitle';
 export type ColorPair = { bg: string; fg: string };
 export type ActionColors = { background: string; foreground: string; pressed: string };
 
@@ -37,6 +37,8 @@ const shared = {
     body: { fontSize: 16, lineHeight: 24, fontWeight: '400' },
     sectionTitle: { fontSize: 20, lineHeight: 26, fontWeight: '700', letterSpacing: -0.6 },
     pageTitle: { fontSize: 32, lineHeight: 35, fontWeight: '700', letterSpacing: -1.5 },
+    heroTitle: { fontSize: 40, lineHeight: 42, fontWeight: '400', letterSpacing: -1.8 },
+    homeSectionTitle: { fontSize: 27, lineHeight: 32, fontWeight: '400', letterSpacing: -1 },
   } satisfies Record<TextVariant, TextStyle>,
   controls: { minimumTouchTarget: 48, choiceTileHeight: 104, icon: 20, smallIcon: 16, borderWidth: 1, selectedBorderWidth: 2, contentWidth: 680 },
   motion: { fast: 120, normal: 180, pressedScale: 0.98 },

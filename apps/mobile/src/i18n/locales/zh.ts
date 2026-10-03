@@ -1,7 +1,7 @@
 import type en from './en';
 export default {
   common: {
-    appName: 'Poop Diary', today: '今天', diary: '日记', profile: '我的',
+    appName: 'Poop Diary', today: '今天', diary: '日记', insights: '洞察', profile: '我的', log: '记录',
     bowel: '排便', food: '饮食', symptom: '身体感觉', water: '饮品', exercise: '运动', sleep: '睡眠',
     back: '返回', close: '关闭', cancel: '取消', save: '保存', edit: '编辑', delete: '删除', undo: '撤销',
     loading: '加载中…', retry: '重试', error: '操作失败，请重试。', saved: '已保存', updated: '已修改', deleted: '已删除', restored: '已恢复',
@@ -13,6 +13,7 @@ export default {
     entryCount: '{{count}} 条记录', entryCount_other: '{{count}} 条记录', allEntries: '查看日记',
     empty: '今天还没有记录', bowelCount: '{{count}} 次排便', bowelCount_other: '{{count}} 次排便',
     quickTitle: '快速记录', overview: '今日概览', streak: '连续记录', days: '天', addFirst: '添加第一条',
+    mealsLabel: '饮食', bowelLabel: '排便', symptomLabel: '身体感觉', exerciseLabel: '运动', sleepLabel: '睡眠', times: '次', entry: '条', lastNight: '昨晚', waterGoal: '/ 2000 ml',
     greetings: { night: '夜深了', morning: '早上好', noon: '中午好', afternoon: '下午好', evening: '晚上好' },
   },
   diary: {

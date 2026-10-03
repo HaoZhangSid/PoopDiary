@@ -1,7 +1,7 @@
 import type en from './en';
 export default {
   common: {
-    appName: 'Poop Diary', today: 'Tänään', diary: 'Päiväkirja', profile: 'Profiili',
+    appName: 'Poop Diary', today: 'Tänään', diary: 'Päiväkirja', insights: 'Näkymät', profile: 'Profiili', log: 'Kirjaa',
     bowel: 'Ulostus', food: 'Ruoka', symptom: 'Oireet', water: 'Juomat', exercise: 'Liikunta', sleep: 'Uni',
     back: 'Takaisin', close: 'Sulje', cancel: 'Peruuta', save: 'Tallenna', edit: 'Muokkaa', delete: 'Poista', undo: 'Kumoa',
     loading: 'Ladataan…', retry: 'Yritä uudelleen', error: 'Toiminto epäonnistui. Yritä uudelleen.', saved: 'Tallennettu', updated: 'Päivitetty', deleted: 'Poistettu', restored: 'Palautettu',
@@ -12,7 +12,8 @@ export default {
     title: 'Tänään', quickLog: 'Kirjaa ulostus', recent: 'Päivän merkinnät',
     entryCount: '{{count}} merkintä', entryCount_other: '{{count}} merkintää', allEntries: 'Avaa päiväkirja',
     empty: 'Ei merkintöjä tänään', bowelCount: '{{count}} ulostuskerta', bowelCount_other: '{{count}} ulostuskertaa',
-    quickTitle: 'Pikakirjaus', overview: 'Päivän yhteenveto', streak: 'Peräkkäin', days: 'päivää', addFirst: 'Lisää merkintä',
+    quickTitle: 'Pikakirjaus', overview: 'Päivän yhteenveto', streak: 'putki', days: 'päivä', addFirst: 'Lisää merkintä',
+    mealsLabel: 'Ateriat', bowelLabel: 'Ulostus', symptomLabel: 'Oireet', exerciseLabel: 'Liikunta', sleepLabel: 'Uni', times: 'kertaa', entry: 'merkintä', lastNight: 'viime yö', waterGoal: '/ 2000 ml',
     greetings: { night: 'Hyvää yötä', morning: 'Hyvää huomenta', noon: 'Hyvää päivää', afternoon: 'Hyvää iltapäivää', evening: 'Hyvää iltaa' },
   },
   diary: {
