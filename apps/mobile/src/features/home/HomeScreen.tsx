@@ -67,19 +67,19 @@ export function HomeScreen() {
       </Card>
     </View>
 
-    <View style={{ gap: theme.spacing.sm }}>
+    <View style={{ gap: theme.controls.quickLogSectionGap }}>
       <AppText variant="homeSectionTitle" accessibilityRole="header">{t('quickTitle')}</AppText>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: theme.spacing.sm, paddingRight: theme.spacing.md }}>
         {quickItems.map((item) => <QuickLogCard key={item.kind} item={item} onPress={() => openPath(item.path)} />)}
       </ScrollView>
     </View>
 
-    <View style={{ gap: theme.spacing.sm, marginTop: theme.spacing.lg }}>
+    <View style={{ marginTop: theme.controls.overviewSectionMarginTop }}>
       <AppText variant="homeSectionTitle" accessibilityRole="header">{t('overview')}</AppText>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.spacing.sm }}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.controls.compactMetricGap, marginTop: theme.controls.overviewSectionGap }}>
         {metrics.map((metric) => <MetricCard key={metric.kind} {...metric} layout={tablet ? (narrowPhone ? 'phone' : 'tablet') : 'desktop'} onPress={() => openPath(quickItems.find((item) => item.kind === metric.kind)?.path)} />)}
       </View>
-      <Pressable accessibilityRole="button" accessibilityLabel={t('water', { ns: 'common' })} onPress={() => openPath('/water/index')} style={({ pressed }) => ({ minHeight: theme.controls.minimumTouchTarget * 1.45, flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm, paddingHorizontal: theme.spacing.md, borderWidth: theme.controls.borderWidth, borderColor: theme.colors.border.default, borderRadius: theme.radius.lg, backgroundColor: pressed ? theme.colors.surface.subtle : theme.colors.surface.card })}>
+      <Pressable accessibilityRole="button" accessibilityLabel={t('water', { ns: 'common' })} onPress={() => openPath('/water/index')} style={({ pressed }) => ({ minHeight: theme.controls.minimumTouchTarget * 1.45, marginTop: theme.controls.overviewMetricToWaterGap, flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm, paddingHorizontal: theme.spacing.md, borderWidth: theme.controls.borderWidth, borderColor: theme.colors.border.default, borderRadius: theme.radius.lg, backgroundColor: pressed ? theme.colors.surface.subtle : theme.colors.surface.card })}>
         <View style={{ width: theme.controls.icon + theme.spacing.md, height: theme.controls.icon + theme.spacing.md, alignItems: 'center', justifyContent: 'center', borderRadius: theme.radius.sm, backgroundColor: theme.colors.entry.water.bg }}><Droplets size={theme.controls.icon} color={theme.colors.entry.water.fg} /></View>
         <View style={{ width: theme.controls.minimumTouchTarget * 2.1, gap: theme.spacing.xs }}><AppText variant="label">{t('water', { ns: 'common' })}</AppText><AppText variant="caption" tone="secondary">{summary.waterMl} {t('waterGoal')}</AppText></View>
         <View style={{ flex: 1, height: theme.spacing.sm, overflow: 'hidden', borderRadius: theme.radius.pill, backgroundColor: theme.colors.surface.subtle }}><View style={{ width: `${Math.min(100, summary.waterMl / 20)}%`, height: '100%', backgroundColor: theme.colors.entry.water.fg }} /></View>
@@ -104,8 +104,8 @@ export function HomeScreen() {
 
 function QuickLogCard({ item, onPress }: { item: QuickItem; onPress: () => void }) {
   const theme = useTheme();
-  return <Pressable accessibilityRole="button" accessibilityLabel={item.label} onPress={onPress} style={({ pressed }) => ({ width: theme.controls.quickLogCardWidth, minHeight: theme.controls.minimumTouchTarget * 1.65, flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm, padding: theme.spacing.sm, borderWidth: theme.controls.borderWidth, borderColor: theme.colors.border.default, borderRadius: theme.radius.lg, backgroundColor: pressed ? item.tone.bg : theme.colors.surface.card })}>
-    <View style={{ width: theme.controls.icon + theme.spacing.md, height: theme.controls.icon + theme.spacing.md, alignItems: 'center', justifyContent: 'center', borderRadius: theme.radius.sm, backgroundColor: item.tone.bg }}><item.icon size={theme.controls.icon} color={item.tone.fg} /></View>
+  return <Pressable accessibilityRole="button" accessibilityLabel={item.label} onPress={onPress} style={({ pressed }) => ({ width: theme.controls.quickLogCardWidth, minHeight: theme.controls.quickLogCardHeight, flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm, padding: theme.controls.quickLogCardPadding, borderWidth: theme.controls.borderWidth, borderColor: theme.colors.border.default, borderRadius: theme.radius.md, backgroundColor: pressed ? item.tone.bg : theme.colors.surface.card })}>
+    <View style={{ width: theme.controls.quickLogIconSize, height: theme.controls.quickLogIconSize, alignItems: 'center', justifyContent: 'center', borderRadius: theme.radius.md, backgroundColor: item.tone.bg }}><item.icon size={theme.controls.quickLogIconGlyph} color={item.tone.fg} /></View>
     <AppText variant="label" style={{ flex: 1 }} numberOfLines={1}>{item.label}</AppText>
     <ArrowRight size={theme.controls.smallIcon} color={theme.colors.text.secondary} />
   </Pressable>;
@@ -114,17 +114,17 @@ function QuickLogCard({ item, onPress }: { item: QuickItem; onPress: () => void 
 function MetricCard({ kind, icon: Icon, value, label, suffix, layout, onPress }: { kind: RecordKind; icon: LucideIcon; value: string; label: string; suffix: string; layout: 'desktop' | 'tablet' | 'phone'; onPress: () => void }) {
   const theme = useTheme();
   const tone = theme.colors.entry[kind];
-  const tabletCard = layout === 'tablet';
   return <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress} style={({ pressed }) => ({
     flexGrow: 0,
-    flexBasis: layout === 'desktop' ? '18%' : '30%',
+    flexBasis: layout === 'desktop' ? '18%' : '31%',
     minWidth: layout === 'desktop' ? 100 : 0,
-    minHeight: theme.controls.minimumTouchTarget * 2.25,
-    gap: theme.spacing.sm,
-    padding: theme.spacing.sm,
+    minHeight: layout === 'desktop' ? theme.controls.minimumTouchTarget * 2.25 : theme.controls.compactMetricHeight,
+    gap: layout === 'desktop' ? theme.spacing.sm : theme.spacing.xs,
+    paddingVertical: layout === 'desktop' ? theme.spacing.sm : theme.controls.compactMetricVerticalPadding,
+    paddingHorizontal: layout === 'desktop' ? theme.spacing.sm : theme.controls.compactMetricPadding,
     borderWidth: theme.controls.borderWidth,
     borderColor: theme.colors.border.default,
-    borderRadius: tabletCard ? theme.radius.md : theme.radius.lg,
+    borderRadius: layout === 'desktop' ? theme.radius.lg : theme.radius.md,
     backgroundColor: pressed ? theme.colors.surface.subtle : theme.colors.surface.card,
   })}>
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.xs }}><Icon size={theme.controls.smallIcon} color={tone.fg} /><AppText variant="caption" tone="secondary" style={{ flex: 1 }} numberOfLines={1}>{label}</AppText><ArrowRight size={theme.spacing.sm} color={theme.colors.text.secondary} /></View>

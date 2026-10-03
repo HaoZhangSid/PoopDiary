@@ -24,7 +24,7 @@ export type Theme = {
   spacing: { xs: number; sm: number; md: number; lg: number; xl: number; xxl: number };
   radius: { sm: number; md: number; lg: number; pill: number };
   typography: Record<TextVariant, TextStyle>;
-  controls: { minimumTouchTarget: number; choiceTileHeight: number; icon: number; smallIcon: number; borderWidth: number; selectedBorderWidth: number; contentWidth: number; quickLogCardWidth: number };
+  controls: { minimumTouchTarget: number; choiceTileHeight: number; icon: number; smallIcon: number; borderWidth: number; selectedBorderWidth: number; contentWidth: number; quickLogCardWidth: number; quickLogCardHeight: number; quickLogCardPadding: number; quickLogIconSize: number; quickLogIconGlyph: number; quickLogSectionGap: number; overviewSectionGap: number; overviewSectionMarginTop: number; overviewMetricToWaterGap: number; compactMetricHeight: number; compactMetricPadding: number; compactMetricVerticalPadding: number; compactMetricGap: number };
   motion: { fast: number; normal: number; pressedScale: number };
 };
 
@@ -40,7 +40,7 @@ const shared = {
     heroTitle: { fontSize: 40, lineHeight: 42, fontWeight: '400', letterSpacing: -1.8 },
     homeSectionTitle: { fontSize: 20, lineHeight: 26, fontWeight: '400', letterSpacing: -0.6 },
   } satisfies Record<TextVariant, TextStyle>,
-  controls: { minimumTouchTarget: 48, choiceTileHeight: 104, icon: 20, smallIcon: 16, borderWidth: 1, selectedBorderWidth: 2, contentWidth: 680, quickLogCardWidth: 132 },
+  controls: { minimumTouchTarget: 48, choiceTileHeight: 104, icon: 20, smallIcon: 16, borderWidth: 1, selectedBorderWidth: 2, contentWidth: 680, quickLogCardWidth: 132, quickLogCardHeight: 48, quickLogCardPadding: 9, quickLogIconSize: 28, quickLogIconGlyph: 17, quickLogSectionGap: 11, overviewSectionGap: 12, overviewSectionMarginTop: 12, overviewMetricToWaterGap: 8, compactMetricHeight: 72, compactMetricPadding: 10, compactMetricVerticalPadding: 7, compactMetricGap: 6 },
   motion: { fast: 120, normal: 180, pressedScale: 0.98 },
 };
 
