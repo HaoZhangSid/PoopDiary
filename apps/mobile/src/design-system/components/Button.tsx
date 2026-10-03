@@ -9,7 +9,7 @@ import { renderIcon, type IconProp } from './Icon';
 export type ButtonProps = {
   label: string;
   onPress: () => void;
-  variant?: 'primary' | 'secondary' | 'danger';
+  variant?: 'primary' | 'secondary' | 'danger' | 'text';
   loading?: boolean;
   disabled?: boolean;
   icon?: IconProp;
@@ -21,7 +21,10 @@ export function Button({ label, onPress, variant = 'primary', loading = false, d
   const reducedMotion = useReducedMotion();
   const [focused, setFocused] = useState(false);
   const inactive = disabled || loading;
-  const colors = theme.colors.action[variant];
+  const text = variant === 'text';
+  const colors = text
+    ? { background: 'transparent', foreground: theme.colors.text.primary, pressed: theme.colors.surface.subtle }
+    : theme.colors.action[variant];
   const foreground = inactive ? theme.colors.disabled.foreground : colors.foreground;
 
   return (
@@ -41,12 +44,12 @@ export function Button({ label, onPress, variant = 'primary', loading = false, d
         paddingHorizontal: theme.spacing.md,
         paddingVertical: theme.spacing.sm,
         borderRadius: theme.radius.md,
-        borderWidth: theme.controls.selectedBorderWidth,
-        borderColor: focused ? theme.colors.focus : variant === 'secondary' ? theme.colors.border.control : 'transparent',
+        borderWidth: !text && (variant === 'secondary' || inactive) ? theme.controls.borderWidth : 0,
+        borderColor: inactive ? theme.colors.border.default : variant === 'secondary' ? theme.colors.border.control : 'transparent',
         outlineColor: theme.colors.focus,
         outlineWidth: focused ? theme.controls.selectedBorderWidth : 0,
         outlineOffset: theme.spacing.xs,
-        backgroundColor: inactive ? theme.colors.disabled.background : pressed ? colors.pressed : colors.background,
+        backgroundColor: inactive && !text ? theme.colors.disabled.background : pressed ? colors.pressed : colors.background,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',

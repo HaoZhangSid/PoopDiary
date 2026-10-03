@@ -8,7 +8,7 @@ Updated: 2026-10-03.
 
 ## Core rules
 
-1. Keep all six flows: food, bowel, symptoms, drinks, exercise and sleep, including their branches.
+1. Keep all six flows: food, bowel, symptoms, drinks, exercise and sleep, including their branches. During native migration, preserve the established Web layout, copy and interaction flows; reuse its logic and replace platform-specific rendering, navigation and storage. Product redesign requires a separate user request.
 2. Use short copy, sensible defaults and quick controls. Avoid unnecessary explanation and steps.
 3. Creation and editing share one editor. Save, edit and delete update all pages; saving gives brief feedback.
 4. Support Chinese, English and Finnish; light/dark/system themes; larger system text.

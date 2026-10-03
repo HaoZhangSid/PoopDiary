@@ -10,10 +10,15 @@ function Bootstrap({ children }: { children: ReactNode }) {
   const { t } = useTranslation('common');
   const status = useAppStore((state) => state.status);
   const initialize = useAppStore((state) => state.initialize);
-  useEffect(() => { void initialize().catch(() => undefined); }, [initialize]);
+  const start = () => initialize().catch((error: unknown) => {
+    if (__DEV__) console.error('Diary initialization failed', error);
+  });
+  useEffect(() => { void initialize().catch((error: unknown) => {
+    if (__DEV__) console.error('Diary initialization failed', error);
+  }); }, [initialize]);
   if (status !== 'ready') return <Screen title={t('appName')}>
     <AppText tone={status === 'error' ? 'danger' : 'secondary'}>{t(status === 'error' ? 'startupError' : 'loading')}</AppText>
-    {status === 'error' && <Button label={t('retry')} onPress={() => { void initialize().catch(() => undefined); }} />}
+    {status === 'error' && <Button label={t('retry')} onPress={() => { void start(); }} />}
   </Screen>;
   return <>{children}<FeedbackHost /></>;
 }

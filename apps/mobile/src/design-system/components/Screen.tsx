@@ -25,7 +25,7 @@ export function Screen({ children, title, subtitle, onBack, right, footer, scrol
     maxWidth: theme.controls.contentWidth,
     alignSelf: 'center' as const,
     paddingHorizontal: theme.spacing.md,
-    paddingVertical: theme.spacing.md,
+    paddingVertical: theme.spacing.sm,
     gap: theme.spacing.md,
   };
 

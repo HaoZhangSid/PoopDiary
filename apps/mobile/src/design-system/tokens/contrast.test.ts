@@ -48,6 +48,9 @@ for (const theme of [lightTheme, darkTheme]) {
       expectContrast(`${surfaceName} control`, theme.colors.border.control, surface, 3);
       expectContrast(`${surfaceName} selected`, theme.colors.border.selected, surface, 3);
       expectContrast(`${surfaceName} focus`, theme.colors.focus, surface, 3);
+      for (const [name, pair] of Object.entries(theme.colors.entry)) {
+        expectContrast(`${surfaceName} ${name} slider accent`, pair.fg, surface, 3);
+      }
     }
     for (const pair of Object.values(theme.colors.severity)) {
       expectContrast('severity selection mark', pair.fg, pair.bg, 3);

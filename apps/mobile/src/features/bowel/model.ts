@@ -15,6 +15,25 @@ export const painLocations = [
 export const severityLevels = ['mild', 'moderate', 'severe'] as const;
 export const urgencyLevels = ['some', 'urgent', 'nearMiss'] as const;
 
+export type BowelStep = 'type' | 'feeling' | 'sensations' | 'pain' | 'bloating' | 'urgency' | 'time';
+
+// Preserve the Web flow's branches; quick logging stays on type until details are requested.
+export function detailSteps(form: BowelForm): BowelStep[] {
+  return [
+    'type', 'feeling', 'sensations',
+    ...(form.sensations.includes('pain') ? ['pain' as const] : []),
+    ...(form.sensations.includes('bloating') ? ['bloating' as const] : []),
+    ...(form.sensations.includes('urgency') ? ['urgency' as const] : []),
+    'time',
+  ];
+}
+
+export function adjacentStep(form: BowelForm, step: BowelStep, direction: -1 | 1): BowelStep {
+  const steps = detailSteps(form);
+  const index = Math.max(0, steps.indexOf(step));
+  return steps[Math.max(0, Math.min(steps.length - 1, index + direction))];
+}
+
 // These codes preserve the Web prototype's agreed safety pause; they are never persisted.
 export const warningSigns = [
   'redBlood', 'blackStool', 'heavyBleeding', 'severePain', 'dizziness', 'feverVomiting',

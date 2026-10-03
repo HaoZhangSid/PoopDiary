@@ -5,5 +5,6 @@ export type SliderProps = {
   maximumValue: number;
   step?: number;
   label?: string;
+  tone?: 'primary' | 'food' | 'bowel' | 'symptom' | 'water' | 'exercise' | 'sleep';
   testID?: string;
 };

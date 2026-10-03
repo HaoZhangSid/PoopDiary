@@ -12,6 +12,8 @@ export default {
     title: 'Tänään', quickLog: 'Kirjaa ulostus', recent: 'Päivän merkinnät',
     entryCount: '{{count}} merkintä', entryCount_other: '{{count}} merkintää', allEntries: 'Avaa päiväkirja',
     empty: 'Ei merkintöjä tänään', bowelCount: '{{count}} ulostuskerta', bowelCount_other: '{{count}} ulostuskertaa',
+    quickTitle: 'Pikakirjaus', overview: 'Päivän yhteenveto', streak: 'Peräkkäin', days: 'päivää', addFirst: 'Lisää merkintä',
+    greetings: { night: 'Hyvää yötä', morning: 'Hyvää huomenta', noon: 'Hyvää päivää', afternoon: 'Hyvää iltapäivää', evening: 'Hyvää iltaa' },
   },
   diary: {
     title: 'Päiväkirja', add: 'Lisää merkintä', empty: 'Ei merkintöjä tältä päivältä', details: 'Merkintä',

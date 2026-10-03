@@ -11,6 +11,8 @@ export default {
     title: 'Today', quickLog: 'Log a bowel movement', recent: 'Your entries',
     entryCount: '{{count}} entry', entryCount_other: '{{count}} entries', allEntries: 'View diary',
     empty: 'No entries today', bowelCount: '{{count}} bowel movement', bowelCount_other: '{{count}} bowel movements',
+    quickTitle: 'Quick log', overview: 'Today at a glance', streak: 'Day streak', days: 'days', addFirst: 'Add an entry',
+    greetings: { night: 'Good night', morning: 'Good morning', noon: 'Good afternoon', afternoon: 'Good afternoon', evening: 'Good evening' },
   },
   diary: {
     title: 'Diary', add: 'Add entry', empty: 'No entries on this day', details: 'Entry',

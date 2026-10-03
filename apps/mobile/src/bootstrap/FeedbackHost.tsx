@@ -25,7 +25,7 @@ function FeedbackNotice({ feedback }: { feedback: Feedback }) {
   const pair = theme.colors.feedback[feedback.tone];
   const FeedbackIcon = feedback.tone === 'danger' ? AlertCircle : Check;
   return (
-    <View pointerEvents="box-none" style={{ position: 'absolute', left: theme.spacing.md, right: theme.spacing.md, bottom: insets.bottom + theme.controls.minimumTouchTarget + theme.spacing.lg }}>
+    <View pointerEvents="box-none" style={{ position: 'absolute', left: theme.spacing.md, right: theme.spacing.md, bottom: insets.bottom + theme.controls.minimumTouchTarget + theme.spacing.xl + theme.spacing.md }}>
       <View accessibilityLiveRegion="polite" style={{ alignSelf: 'center', maxWidth: theme.controls.contentWidth, backgroundColor: pair.bg, borderRadius: theme.radius.md, padding: theme.spacing.sm, flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm }}>
         <FeedbackIcon size={theme.controls.icon} color={pair.fg} />
         <AppText variant="label" style={{ flexShrink: 1, color: pair.fg }}>{feedback.message}</AppText>

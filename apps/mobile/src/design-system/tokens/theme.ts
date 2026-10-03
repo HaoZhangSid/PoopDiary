@@ -24,21 +24,21 @@ export type Theme = {
   spacing: { xs: number; sm: number; md: number; lg: number; xl: number; xxl: number };
   radius: { sm: number; md: number; lg: number; pill: number };
   typography: Record<TextVariant, TextStyle>;
-  controls: { minimumTouchTarget: number; icon: number; smallIcon: number; borderWidth: number; selectedBorderWidth: number; contentWidth: number };
+  controls: { minimumTouchTarget: number; choiceTileHeight: number; icon: number; smallIcon: number; borderWidth: number; selectedBorderWidth: number; contentWidth: number };
   motion: { fast: number; normal: number; pressedScale: number };
 };
 
 const shared = {
   spacing: { xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48 },
-  radius: { sm: 8, md: 12, lg: 20, pill: 999 },
+  radius: { sm: 8, md: 11, lg: 17, pill: 999 },
   typography: {
     caption: { fontSize: 14, lineHeight: 20, fontWeight: '400' },
-    label: { fontSize: 16, lineHeight: 22, fontWeight: '600' },
+    label: { fontSize: 14, lineHeight: 20, fontWeight: '700' },
     body: { fontSize: 16, lineHeight: 24, fontWeight: '400' },
-    sectionTitle: { fontSize: 22, lineHeight: 28, fontWeight: '700' },
-    pageTitle: { fontSize: 32, lineHeight: 40, fontWeight: '700' },
+    sectionTitle: { fontSize: 20, lineHeight: 26, fontWeight: '700', letterSpacing: -0.6 },
+    pageTitle: { fontSize: 32, lineHeight: 35, fontWeight: '700', letterSpacing: -1.5 },
   } satisfies Record<TextVariant, TextStyle>,
-  controls: { minimumTouchTarget: 48, icon: 20, smallIcon: 16, borderWidth: 1, selectedBorderWidth: 2, contentWidth: 680 },
+  controls: { minimumTouchTarget: 48, choiceTileHeight: 104, icon: 20, smallIcon: 16, borderWidth: 1, selectedBorderWidth: 2, contentWidth: 680 },
   motion: { fast: 120, normal: 180, pressedScale: 0.98 },
 };
 
@@ -49,7 +49,7 @@ export const lightTheme: Theme = {
   colors: {
     surface: { canvas: '#f6f1e9', card: '#fffcf7', subtle: '#eee6dc' },
     text: { primary: '#2b1f19', secondary: '#706359', disabled: '#706359' },
-    border: { default: '#e9e1d5', selected: '#2b1f19', control: '#8d7766' },
+    border: { default: '#e9e1d5', selected: '#2b1f19', control: '#927b68' },
     action: {
       primary: { background: '#2b1f19', foreground: '#fffcf7', pressed: '#4a382d' },
       secondary: { background: '#fffcf7', foreground: '#2b1f19', pressed: '#eee6dc' },
@@ -96,7 +96,7 @@ export const darkTheme: Theme = {
   colors: {
     surface: { canvas: '#1a1411', card: '#261d18', subtle: '#3b2f28' },
     text: { primary: '#f4ebe0', secondary: '#b9a99c', disabled: '#b9a99c' },
-    border: { default: '#463930', selected: '#f4ebe0', control: '#a08b7d' },
+    border: { default: '#463930', selected: '#f4ebe0', control: '#927b6a' },
     action: {
       primary: { background: '#f4ebe0', foreground: '#1a1411', pressed: '#d7c7b8' },
       secondary: { background: '#261d18', foreground: '#f4ebe0', pressed: '#3b2f28' },

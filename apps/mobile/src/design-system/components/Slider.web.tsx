@@ -7,16 +7,17 @@ import type { SliderProps } from './Slider.types';
 
 export type { SliderProps } from './Slider.types';
 
-export function Slider({ value, onValueChange, minimumValue, maximumValue, step = 1, label, testID }: SliderProps) {
+export function Slider({ value, onValueChange, minimumValue, maximumValue, step = 1, label, tone = 'primary', testID }: SliderProps) {
   const theme = useTheme();
   const [focused, setFocused] = useState(false);
   const boundedValue = Math.max(minimumValue, Math.min(maximumValue, value));
+  const accent = tone === 'primary' ? theme.colors.text.primary : theme.colors.entry[tone].fg;
   const inputStyle: CSSProperties = {
     display: 'block',
     width: '100%',
     minHeight: theme.controls.minimumTouchTarget,
     margin: 0,
-    accentColor: theme.colors.entry.water.fg,
+    accentColor: accent,
     colorScheme: theme.appearance,
     outlineColor: theme.colors.focus,
     outlineWidth: focused ? theme.controls.selectedBorderWidth : 0,

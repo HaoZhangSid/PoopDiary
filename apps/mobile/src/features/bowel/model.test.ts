@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { validateRecordDraft, type BowelRecord } from '@/domain/records';
-import { createDraft, createForm, toggleSensation, updateDatePart, usesEmergencyCopy, warningSigns } from './model';
+import { adjacentStep, createDraft, createForm, detailSteps, toggleSensation, updateDatePart, usesEmergencyCopy, warningSigns } from './model';
 
 const existing: BowelRecord = {
   id: 'existing', kind: 'bowel', schemaVersion: 1,
@@ -94,5 +94,32 @@ describe('Date controls', () => {
     expect(updateDatePart('2026-01-31', 'month', 2)).toBe('2026-02-28');
     expect(updateDatePart('2024-01-31', 'month', 2)).toBe('2024-02-29');
     expect(updateDatePart('2024-02-29', 'year', 2026)).toBe('2026-02-28');
+  });
+});
+
+describe('Web detail flow parity', () => {
+  it('skips symptom detail pages when no matching symptom was selected', () => {
+    const form = createForm();
+    expect(detailSteps(form)).toEqual(['type', 'feeling', 'sensations', 'time']);
+    expect(adjacentStep(form, 'sensations', 1)).toBe('time');
+    expect(adjacentStep(form, 'time', -1)).toBe('sensations');
+  });
+
+  it('keeps pain, bloating and urgency as separate pages with correct forward and back order', () => {
+    const form = createForm(existing);
+    expect(detailSteps(form)).toEqual(['type', 'feeling', 'sensations', 'pain', 'bloating', 'urgency', 'time']);
+    expect(adjacentStep(form, 'pain', 1)).toBe('bloating');
+    expect(adjacentStep(form, 'bloating', 1)).toBe('urgency');
+    expect(adjacentStep(form, 'urgency', 1)).toBe('time');
+    expect(adjacentStep(form, 'time', -1)).toBe('urgency');
+    expect(adjacentStep(form, 'bloating', -1)).toBe('pain');
+  });
+
+  it('updates the next page after the user goes back and deselects a symptom', () => {
+    const form = toggleSensation(createForm(existing), 'pain');
+    expect(adjacentStep(form, 'sensations', 1)).toBe('bloating');
+    expect(adjacentStep(form, 'bloating', -1)).toBe('sensations');
+    expect(adjacentStep(form, 'type', -1)).toBe('type');
+    expect(adjacentStep(form, 'time', 1)).toBe('time');
   });
 });

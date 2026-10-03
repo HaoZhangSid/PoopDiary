@@ -12,6 +12,8 @@ export default {
     title: '今天', quickLog: '记录排便', recent: '今天的记录',
     entryCount: '{{count}} 条记录', entryCount_other: '{{count}} 条记录', allEntries: '查看日记',
     empty: '今天还没有记录', bowelCount: '{{count}} 次排便', bowelCount_other: '{{count}} 次排便',
+    quickTitle: '快速记录', overview: '今日概览', streak: '连续记录', days: '天', addFirst: '添加第一条',
+    greetings: { night: '夜深了', morning: '早上好', noon: '中午好', afternoon: '下午好', evening: '晚上好' },
   },
   diary: {
     title: '日记', add: '添加记录', empty: '这天还没有记录', details: '记录详情',

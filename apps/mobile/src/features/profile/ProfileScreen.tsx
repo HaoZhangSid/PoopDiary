@@ -20,10 +20,10 @@ export function ProfileScreen() {
   };
   return <Screen title={t('title')}>
     <Card><AppText variant="sectionTitle" accessibilityRole="header">{t('language')}</AppText>
-      {(['en', 'fi', 'zh'] as const).map((code) => <Choice key={code} label={{ en: 'English', fi: 'Suomi', zh: '中文' }[code]} selected={settings.language === code} disabled={busy} onPress={() => { void change({ language: code }); }} />)}
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.spacing.sm }}>{(['en', 'fi', 'zh'] as const).map((code) => <View key={code} style={{ flexBasis: '28%', flexGrow: 1, minWidth: theme.controls.minimumTouchTarget * 2 }}><Choice density="compact" style={{ flex: 1 }} label={{ en: 'English', fi: 'Suomi', zh: '中文' }[code]} selected={settings.language === code} disabled={busy} onPress={() => { void change({ language: code }); }} /></View>)}</View>
     </Card>
     <Card><AppText variant="sectionTitle" accessibilityRole="header">{t('appearance')}</AppText>
-      {(['light', 'dark', 'system'] as const).map((appearance) => <Choice key={appearance} label={t(appearance)} selected={settings.appearance === appearance} disabled={busy} onPress={() => { void change({ appearance }); }} />)}
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.spacing.sm }}>{(['light', 'dark', 'system'] as const).map((appearance) => <View key={appearance} style={{ flexBasis: '28%', flexGrow: 1, minWidth: theme.controls.minimumTouchTarget * 2 }}><Choice density="compact" style={{ flex: 1 }} label={t(appearance)} selected={settings.appearance === appearance} disabled={busy} onPress={() => { void change({ appearance }); }} /></View>)}</View>
     </Card>
     {Boolean(error) && <AppText tone="danger">{error}</AppText>}
     <Button variant="secondary" label={t('components')} onPress={() => router.push('/components')} />

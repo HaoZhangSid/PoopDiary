@@ -24,14 +24,14 @@ export function IconButton({ label, icon, onPress, disabled = false, testID }: I
         minHeight: theme.controls.minimumTouchTarget,
         minWidth: theme.controls.minimumTouchTarget,
         borderRadius: theme.radius.sm,
-        borderWidth: theme.controls.selectedBorderWidth,
-        borderColor: focused ? theme.colors.focus : 'transparent',
+        borderWidth: theme.controls.borderWidth,
+        borderColor: 'transparent',
         outlineColor: theme.colors.focus,
         outlineWidth: focused ? theme.controls.selectedBorderWidth : 0,
         outlineOffset: theme.spacing.xs,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: pressed || disabled ? theme.colors.surface.subtle : theme.colors.surface.card,
+        backgroundColor: pressed || disabled ? theme.colors.surface.subtle : 'transparent',
       })}
     >
       <View accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">

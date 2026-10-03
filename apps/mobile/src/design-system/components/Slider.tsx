@@ -8,10 +8,11 @@ import type { SliderProps } from './Slider.types';
 
 export type { SliderProps } from './Slider.types';
 
-export function Slider({ value, onValueChange, minimumValue, maximumValue, step = 1, label, testID }: SliderProps) {
+export function Slider({ value, onValueChange, minimumValue, maximumValue, step = 1, label, tone = 'primary', testID }: SliderProps) {
   const theme = useTheme();
   const [focused, setFocused] = useState(false);
   const boundedValue = Math.max(minimumValue, Math.min(maximumValue, value));
+  const accent = tone === 'primary' ? theme.colors.text.primary : theme.colors.entry[tone].fg;
   return (
     <View style={{ gap: theme.spacing.sm }}>
       <View style={{ flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', gap: theme.spacing.sm }}>
@@ -30,9 +31,9 @@ export function Slider({ value, onValueChange, minimumValue, maximumValue, step 
         accessibilityValue={{ min: minimumValue, max: maximumValue, now: boundedValue }}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        minimumTrackTintColor={theme.colors.entry.water.fg}
+        minimumTrackTintColor={accent}
         maximumTrackTintColor={theme.colors.border.control}
-        thumbTintColor={theme.colors.entry.water.fg}
+        thumbTintColor={accent}
         style={{
           width: '100%',
           minHeight: theme.controls.minimumTouchTarget,
