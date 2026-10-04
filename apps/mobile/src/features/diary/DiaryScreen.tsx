@@ -57,7 +57,7 @@ export function DiaryScreen() {
       <AppText variant="eyebrow" tone="secondary">{t('eyebrow')}</AppText>
       <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: theme.spacing.md }}>
         <AppText variant="webPageTitle" accessibilityRole="header">{t('title')}</AppText>
-        <Pressable accessibilityRole="button" accessibilityLabel={t('log', { ns: 'common' })} onPress={() => router.push('/bowel')} style={({ pressed }) => ({ width: 74, height: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: theme.spacing.xs, borderRadius: theme.radius.md, backgroundColor: pressed ? theme.colors.action.primary.pressed : theme.colors.action.primary.background })}><Plus size={17} color={theme.colors.action.primary.foreground} /><AppText variant="label" style={{ color: theme.colors.action.primary.foreground, fontSize: 13, lineHeight: 18 }}>{t('log', { ns: 'common' }).toLowerCase()}</AppText></Pressable>
+        <Pressable accessibilityRole="button" accessibilityLabel={t('log', { ns: 'common' })} onPress={() => router.push('/bowel')} style={({ pressed }) => ({ width: 74, height: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: theme.spacing.xs, borderRadius: theme.radius.md, backgroundColor: pressed ? theme.colors.action.primary.pressed : theme.colors.action.primary.background })}><Plus size={17} color={theme.colors.action.primary.foreground} /><AppText variant="label" style={{ color: theme.colors.action.primary.foreground, fontSize: theme.typography.label.fontSize - theme.controls.borderWidth, lineHeight: theme.typography.label.lineHeight - theme.spacing.xs / 2 }}>{t('log', { ns: 'common' }).toLowerCase()}</AppText></Pressable>
       </View>
     </View>
     <View style={{ height: 83, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: theme.spacing.md, borderTopWidth: theme.controls.borderWidth, borderBottomWidth: theme.controls.borderWidth, borderColor: theme.colors.border.default }}>
@@ -69,8 +69,8 @@ export function DiaryScreen() {
           const dateObject = new Date(`${key}T12:00:00`);
           const day = new Intl.DateTimeFormat(i18n.language, { weekday: 'short' }).format(dateObject);
           return <Pressable key={key} accessibilityRole="button" accessibilityState={{ selected: selectedDay }} onPress={() => changeDate(key)} style={{ position: 'relative', width: 92, minHeight: 57, alignItems: 'center', justifyContent: 'center', gap: theme.spacing.xs / 2, paddingVertical: theme.spacing.sm, borderRadius: theme.radius.md, backgroundColor: selectedDay ? theme.colors.surface.subtle : 'transparent' }}>
-            <AppText variant="label" style={{ fontSize: 16, lineHeight: 20, color: selectedDay ? theme.colors.text.primary : theme.colors.text.secondary }}>{dateObject.getDate()}</AppText>
-            <AppText variant="caption" tone="secondary" style={{ fontSize: 10, lineHeight: 12 }}>{day}</AppText>
+            <AppText variant="label" style={{ fontSize: theme.typography.body.fontSize, lineHeight: theme.typography.label.lineHeight, color: selectedDay ? theme.colors.text.primary : theme.colors.text.secondary }}>{dateObject.getDate()}</AppText>
+            <AppText variant="caption" tone="secondary" style={{ fontSize: theme.typography.eyebrow.fontSize, lineHeight: theme.typography.eyebrow.lineHeight }}>{day}</AppText>
             {today && <View style={{ position: 'absolute', bottom: theme.spacing.xs, width: theme.spacing.xs, height: theme.spacing.xs, borderRadius: theme.radius.pill, backgroundColor: theme.colors.entry.bowel.fg }} />}
           </Pressable>;
         })}

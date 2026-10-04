@@ -4,6 +4,7 @@ export type Appearance = 'light' | 'dark' | 'system';
 export type TextVariant = 'caption' | 'label' | 'body' | 'sectionTitle' | 'pageTitle' | 'heroTitle' | 'homeSectionTitle' | 'eyebrow' | 'webPageTitle' | 'dateTitle';
 export type ColorPair = { bg: string; fg: string };
 export type ActionColors = { background: string; foreground: string; pressed: string };
+type TypographyToken = TextStyle & { fontSize: number; lineHeight: number };
 
 export type Theme = {
   appearance: 'light' | 'dark';
@@ -23,8 +24,8 @@ export type Theme = {
   };
   spacing: { xs: number; sm: number; md: number; lg: number; xl: number; xxl: number };
   radius: { sm: number; md: number; lg: number; pill: number };
-  typography: Record<TextVariant, TextStyle>;
-  controls: { minimumTouchTarget: number; choiceTileHeight: number; icon: number; smallIcon: number; borderWidth: number; selectedBorderWidth: number; contentWidth: number; quickLogCardWidth: number; quickLogCardHeight: number; quickLogCardPadding: number; quickLogIconSize: number; quickLogIconGlyph: number; quickLogSectionGap: number; overviewSectionGap: number; overviewSectionMarginTop: number; overviewMetricToWaterGap: number; compactMetricHeight: number; compactMetricPadding: number; compactMetricVerticalPadding: number; compactMetricGap: number };
+  typography: Record<TextVariant, TypographyToken>;
+  controls: { minimumTouchTarget: number; choiceTileHeight: number; icon: number; smallIcon: number; borderWidth: number; selectedBorderWidth: number; contentWidth: number; quickLogCardWidth: number; quickLogCardHeight: number; quickLogCardPadding: number; quickLogIconSize: number; quickLogIconGlyph: number; quickLogSectionGap: number; overviewSectionGap: number; overviewSectionMarginTop: number; overviewMetricToWaterGap: number; compactMetricHeight: number; compactMetricPadding: number; compactMetricVerticalPadding: number; compactMetricGap: number; insightsChartGap: number; insightsChartHeight: number; insightsChartBarHeight: number; insightsChartBarWidth: number; insightsChartBarRadius: number; insightsChartDayGap: number; insightsChartCountWidth: number; insightsCardMinHeight: number; reportCoverageMinHeight: number; reportCoverageRingSize: number; reportMetricMinHeight: number; reportZoneGap: number; reportZoneLabelWidth: number; reportZoneBarHeight: number; reportZoneCountWidth: number; reportTypeLabelSize: number; reportRowMinHeight: number };
   motion: { fast: number; normal: number; pressedScale: number };
 };
 
@@ -43,7 +44,7 @@ const shared = {
     webPageTitle: { fontSize: 46, lineHeight: 50, fontWeight: '700', letterSpacing: -2.2 },
     dateTitle: { fontSize: 24, lineHeight: 30, fontWeight: '400', letterSpacing: -0.5 },
   } satisfies Record<TextVariant, TextStyle>,
-  controls: { minimumTouchTarget: 48, choiceTileHeight: 104, icon: 20, smallIcon: 16, borderWidth: 1, selectedBorderWidth: 2, contentWidth: 1120, quickLogCardWidth: 132, quickLogCardHeight: 54, quickLogCardPadding: 10, quickLogIconSize: 30, quickLogIconGlyph: 17, quickLogSectionGap: 15, overviewSectionGap: 22, overviewSectionMarginTop: 12, overviewMetricToWaterGap: 10, compactMetricHeight: 72, compactMetricPadding: 10, compactMetricVerticalPadding: 7, compactMetricGap: 10 },
+  controls: { minimumTouchTarget: 48, choiceTileHeight: 104, icon: 20, smallIcon: 16, borderWidth: 1, selectedBorderWidth: 2, contentWidth: 1120, quickLogCardWidth: 132, quickLogCardHeight: 54, quickLogCardPadding: 10, quickLogIconSize: 30, quickLogIconGlyph: 17, quickLogSectionGap: 15, overviewSectionGap: 22, overviewSectionMarginTop: 12, overviewMetricToWaterGap: 10, compactMetricHeight: 72, compactMetricPadding: 10, compactMetricVerticalPadding: 7, compactMetricGap: 10, insightsChartGap: 13, insightsChartHeight: 164, insightsChartBarHeight: 135, insightsChartBarWidth: 7, insightsChartBarRadius: 4, insightsChartDayGap: 7, insightsChartCountWidth: 18, insightsCardMinHeight: 270, reportCoverageMinHeight: 152, reportCoverageRingSize: 64, reportMetricMinHeight: 74, reportZoneGap: 15, reportZoneLabelWidth: 132, reportZoneBarHeight: 8, reportZoneCountWidth: 20, reportTypeLabelSize: 9, reportRowMinHeight: 44 },
   motion: { fast: 120, normal: 180, pressedScale: 0.98 },
 };
 

@@ -96,7 +96,7 @@ export function HomeScreen() {
 
     <View style={{ gap: theme.spacing.sm, marginTop: theme.spacing.lg - theme.spacing.xs + theme.controls.borderWidth }}>
       <View style={{ minHeight: theme.spacing.xxl + theme.spacing.sm + theme.spacing.xs, flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: theme.spacing.sm }}>
-        <View style={{ paddingTop: theme.spacing.sm, minWidth: 0 }}><AppText variant="caption" style={{ fontSize: 10, lineHeight: 12, fontWeight: '800', letterSpacing: 1.4 }}>{t('recent')} · {summary.entries.length} {t('entry')}</AppText><AppText variant="homeSectionTitle" style={{ lineHeight: 30, marginTop: theme.spacing.xs }}>{t('recent')}</AppText></View>
+        <View style={{ paddingTop: theme.spacing.sm, minWidth: 0 }}><AppText variant="eyebrow">{t('recent')} · {summary.entries.length} {t('entry')}</AppText><AppText variant="homeSectionTitle" style={{ marginTop: theme.spacing.xs }}>{t('recent')}</AppText></View>
         <Pressable accessibilityRole="button" accessibilityLabel={t('allEntries')} onPress={() => router.push('/diary')} style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.xs, paddingVertical: theme.spacing.xs }}><AppText variant="label">{t('allEntries')}</AppText><ArrowRight size={theme.controls.smallIcon} color={theme.colors.text.primary} /></Pressable>
       </View>
       {!summary.entries.length ? <View style={{ alignItems: 'center', gap: theme.spacing.md, paddingVertical: theme.spacing.xl }}>
