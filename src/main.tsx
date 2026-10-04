@@ -1,3 +1,4 @@
+// Legacy Web prototype entry. Current Expo app: apps/mobile/src/app/_layout.tsx.
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'

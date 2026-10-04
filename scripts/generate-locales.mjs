@@ -1,3 +1,4 @@
+// Legacy one-off tool: overwrites root Web locales. Not used by the Expo app.
 import fs from 'node:fs/promises'
 import { parse } from '@babel/parser'
 import traverse from '@babel/traverse'

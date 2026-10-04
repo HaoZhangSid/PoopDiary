@@ -32,6 +32,8 @@ The server is a required later deliverable, not an optional idea. After the foun
 
 ## Structure and boundaries
 
+The paths below are relative to `apps/mobile/`, not the legacy root `src/`.
+
 ```text
 src/
   app/                         Expo Router routes and root layout

@@ -1,10 +1,22 @@
 # Poop Diary — Team & agent guide
 
-Updated: 2026-10-03.
+Updated: 2026-10-04.
 
 **Now:** Web reference at the root; Expo SDK 57 app in `apps/mobile` with shared themes, three languages, SQLite, all six logging flows, Diary, Insights, Report, and complete CRUD. Azure integration and native device verification are still pending.
 
 **Direction:** Expo + TypeScript + Expo Router; shared themed components; SQLite; Azure. Azure services and cloud scope remain open. Keep Web and native dependencies separate. Native feature work follows the foundation plan.
+
+## Current app vs. legacy reference
+
+| Location | Role |
+| --- | --- |
+| `apps/mobile/` | **Current app.** All new feature work belongs here; `src/` paths in the Expo foundation plan are relative to this app. |
+| Root `src/` | **Legacy Web prototype.** Layout/interaction reference, including its CSS, demo data, analytics and translations. |
+| Root `scripts/` | **Legacy tooling.** One-off scripts that rewrite the Web prototype's translations. |
+| Root `package*.json`, `index.html`, `vite.config.ts`, `tailwind.config.js`, `postcss.config.js`, `tsconfig*.json` | **Legacy build setup.** Root `mobile*` commands are conveniences that forward to Expo. |
+| `docs/`, root guides and `.github/` | **Shared.** Team documentation and checks for both apps. |
+
+Keep the legacy reference stable unless a task explicitly targets it. Do not import root `src/` into Expo or treat its CSS, record types or translated values as shared app contracts. Adapt reusable logic into the Expo app's own layers. The root and mobile apps have separate lockfiles, dependencies, translations and storage; no automatic data migration is implemented.
 
 ## Core rules
 
@@ -23,15 +35,24 @@ Updated: 2026-10-03.
 
 ## Current commands
 
+From `apps/mobile` (current app):
+
+```sh
+npm ci
+npm start -- --go
+npm run web
+npm run check
+```
+
+From the repository root (legacy reference):
+
 ```sh
 npm ci
 npm run dev
 npm run build
-npm run mobile:web
-npm run check:mobile
 ```
 
-For mobile, first run `npm ci` in `apps/mobile`. Its [README](apps/mobile/README.md) covers device startup, checks and exports. Local checks are configured; CI runs once this repository is hosted on GitHub. Do not claim device or cloud verification from a JS export.
+Root `npm run mobile:web` and `npm run check:mobile` forward to the current app after its dependencies are installed. Its [README](apps/mobile/README.md) covers device startup, checks and exports. GitHub Actions checks the Expo app and legacy Web reference separately. Do not claim device or cloud verification from a JS export.
 
 ## Details
 

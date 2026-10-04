@@ -1,3 +1,4 @@
+/* Legacy Web prototype styles. Current Expo theme: apps/mobile/src/design-system/tokens/theme.ts. */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

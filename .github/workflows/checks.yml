@@ -4,6 +4,7 @@ on:
   pull_request:
 jobs:
   mobile:
+    name: Current Expo app
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -21,6 +22,7 @@ jobs:
       - run: npm run export:web
       - run: npm run export:native
   web-reference:
+    name: Legacy Web reference
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

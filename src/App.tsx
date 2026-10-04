@@ -1,3 +1,4 @@
+// Legacy Web prototype: visual/interaction reference. Current app: apps/mobile/src/features/.
 import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, NavLink, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
 import {
